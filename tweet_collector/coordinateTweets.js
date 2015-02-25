@@ -1,7 +1,8 @@
 var Twit   = require('twit'), // wrapper on top of twitter api
   dotenv   = require('dotenv'), // used for keys -> get from .env
   sentiment = require('sentiment'),
-  fs        = require('fs'); 
+  fs        = require('fs'),
+  Tweet     = require('./mongo.js').tweetInit();
 
   dotenv.load();
 
@@ -21,9 +22,9 @@ var Twit   = require('twit'), // wrapper on top of twitter api
         (((tweet.geo.coordinates[0] >= -180 && tweet.geo.coordinates[0] <= -90)||(tweet.geo.coordinates[0] >= 90 && tweet.geo.coordinates[0] <= 180))
         ||((tweet.geo.coordinates[1] >= 90 && tweet.geo.coordinates[1] <= 180) || (tweet.geo.coordinates[1] >= -180 && tweet.geo.coordinates[1] <= -90)))){
         var obj = JSON.stringify(tweet);
-        fs.appendFile('tweets.json', obj+",\n", function(err){
+        Tweet.create(tweet, function(err,doc){
           if(err) throw err;
-          console.log(tweet.geo.coordinates[0]+", "+tweet.geo.coordinates[1]);
+          console.log(obj);
         })
       }
     })
@@ -34,9 +35,9 @@ var Twit   = require('twit'), // wrapper on top of twitter api
       if(tweet.geo != null && tweet.lang=="en" && ((tweet.geo.coordinates[0] >= -90 && tweet.geo.coordinates[0] <= 90)
                                                &&(tweet.geo.coordinates[1] >= -90 && tweet.geo.coordinates[1] <= 90))){
         var obj = JSON.stringify(tweet);
-        fs.appendFile('tweets.json', obj+",\n", function(err){
+        Tweet.create(tweet, function(err,doc){
           if(err) throw err;
-          console.log(tweet.geo.coordinates[0]+", "+tweet.geo.coordinates[1]);
+          console.log(obj);
         })
       }
     })
