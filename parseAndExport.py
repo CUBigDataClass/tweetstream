@@ -16,15 +16,17 @@ coordlist = []
 for i in range(0, len(data)):
 	x = data[i]['coordinates']['coordinates']
 	lat,long = (x[0],x[1])
+	print lat
+	print long
 	coordlist.append((lat,long))
 
+dsffadafs
+
+#hm = heatmap.Heatmap()
 
 
-hm = heatmap.Heatmap()
-
-
-hm.heatmap(coordlist, dotsize = 30)
-hm.saveKML("tweetcoords.kml")
+#hm.heatmap(coordlist, dotsize = 30)
+#hm.saveKML("tweetcoords.kml")
 
 
 json_data.close()
