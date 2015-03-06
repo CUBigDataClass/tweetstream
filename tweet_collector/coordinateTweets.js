@@ -43,8 +43,21 @@ var Twit   = require('twit'), // wrapper on top of twitter api
     })
   }
 
+  function getNewYork(){
+    stream.on('tweet', function(tweet){
+      // filter tweets that have geo location and are in english
+      if(tweet.place != null && tweet.place.name =="New York"){
+        var obj = JSON.stringify(tweet);
+        console.log(obj)
+      }
+    })
+
+  }
+
 exports.getTweetsOne = getTweetsOne;
 exports.getTweetsTwo = getTweetsTwo;
+exports.getNewYork = getNewYork;
+
 
 
 

@@ -7,5 +7,8 @@ function getTweets(args) {
   else if(args == 'second'){
     tweets.getTweetsTwo();
   }
+  else if(args == 'newyork'){
+    tweets.getNewYork();
+  }
 }
 getTweets();
