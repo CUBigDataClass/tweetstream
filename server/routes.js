@@ -13,18 +13,35 @@ module.exports = function(app) {
 	    access_token_secret: 	process.env.TWITTER_ACCESS_KEY
 	});
 
-
-	var stream = T.stream('statuses/sample')
-	stream.on('tweet', function(tweet){
-		// filter tweets that have geo location and are in english
-		if(tweet.geo != null && tweet.lang=="en" && ((tweet.geo.coordinates[0] >= -90 && tweet.geo.coordinates[0] <= 90)&&(tweet.geo.coordinates[1] >= -90 && tweet.geo.coordinates[1] <= 90))){
-			var obj = JSON.stringify(tweet);
-			fs.appendFile('tweets.json', obj+",\n", function(err){
-				if(err) throw err;
-				console.log("SUCCUESSSS!!!!");
-			})
-		}
-	})
+	app.get('/tweets/josh', function(req,res){
+		var stream = T.stream('statuses/sample')
+		stream.on('tweet', function(tweet){
+			// filter tweets that have geo location and are in english
+			if(tweet.geo != null && tweet.lang=="en" && 
+				(((tweet.geo.coordinates[0] >= -180 && tweet.geo.coordinates[0] <= -90)||(tweet.geo.coordinates[0] >= 90 && tweet.geo.coordinates[0] <= 180))
+				||((tweet.geo.coordinates[1] >= 90 && tweet.geo.coordinates[1] <= 180) || (tweet.geo.coordinates[1] >= -180 && tweet.geo.coordinates[1] <= -90)))){
+				var obj = JSON.stringify(tweet);
+				fs.appendFile('tweets.json', obj+",\n", function(err){
+					if(err) throw err;
+					console.log(tweet.geo.coordinates[0]+", "+tweet.geo.coordinates[1]);
+				})
+			}
+		})
+	});
+	app.get('/tweets/alex', function(req,res){
+		var stream = T.stream('statuses/sample')
+		stream.on('tweet', function(tweet){
+			// filter tweets that have geo location and are in english
+			if(tweet.geo != null && tweet.lang=="en" && ((tweet.geo.coordinates[0] >= -90 && tweet.geo.coordinates[0] <= 90)
+																							 &&(tweet.geo.coordinates[1] >= -90 && tweet.geo.coordinates[1] <= 90))){
+				var obj = JSON.stringify(tweet);
+				fs.appendFile('tweets.json', obj+",\n", function(err){
+					if(err) throw err;
+					console.log(tweet.geo.coordinates[0]+", "+tweet.geo.coordinates[1]);
+				})
+			}
+		})
+	});
 
 
 	// app.get('/', function(req,res){
