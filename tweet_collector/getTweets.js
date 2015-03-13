@@ -10,5 +10,8 @@ function getTweets(args) {
   else if(args == 'newyork'){
     tweets.getNewYork();
   }
+  else if(args == 'smile'){
+    tweets.getSmile();
+  }
 }
 getTweets();

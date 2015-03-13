@@ -1,10 +1,12 @@
 var Twit   = require('twit'), // wrapper on top of twitter api
   dotenv   = require('dotenv'), // used for keys -> get from .env
-  sentiment = require('sentiment'),
+  sentiment = require('../sentiment'),
   fs        = require('fs'),
   Tweet     = require('./mongo.js').tweetInit();
 
-  dotenv.load();
+// dotenv._getKeysAndValuesFromEnvFilePath('../.env');
+// dotenv._setEnvs();
+dotenv.load();
 
   var T = new Twit({
       consumer_key:       process.env.TWITTER_CONSUMER_KEY,
@@ -13,7 +15,7 @@ var Twit   = require('twit'), // wrapper on top of twitter api
       access_token_secret:  process.env.TWITTER_ACCESS_KEY
   });
 
-  var stream = T.stream('statuses/sample')
+  var stream = T.stream('statuses/sample');
 
   function getTweetsOne() {
       stream.on('tweet', function(tweet){
@@ -24,7 +26,8 @@ var Twit   = require('twit'), // wrapper on top of twitter api
         var obj = JSON.stringify(tweet);
         Tweet.create(tweet, function(err,doc){
           if(err) throw err;
-          console.log(obj);
+          console.log(tweet.text);
+        console.log(sentiment(tweet.text));
         })
       }
     })
@@ -37,7 +40,7 @@ var Twit   = require('twit'), // wrapper on top of twitter api
         var obj = JSON.stringify(tweet);
         Tweet.create(tweet, function(err,doc){
           if(err) throw err;
-          console.log(obj);
+          console.log(tweet.text);
         })
       }
     })
@@ -51,12 +54,23 @@ var Twit   = require('twit'), // wrapper on top of twitter api
         console.log(obj)
       }
     })
+  }
 
+  function getSmile(){
+    stream.on('tweet', function(tweet){
+  // filter tweets that have geo location and are in english
+      if(tweet.text.indexOf("😃") > -1 && tweet.lang=="en"){
+        var obj = JSON.stringify(tweet);
+        console.log(tweet.text);
+        console.log(sentiment(tweet.text));
+      }
+    })
   }
 
 exports.getTweetsOne = getTweetsOne;
 exports.getTweetsTwo = getTweetsTwo;
 exports.getNewYork = getNewYork;
+exports.getSmile = getSmile;
 
 
 
