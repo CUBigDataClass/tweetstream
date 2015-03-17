@@ -28,8 +28,14 @@ function tokenize (input) {
             .split(' ');
     var emojis = input
             .match(emojiRegex());
-    emojis = _.uniq(emojis);
-    return str.concat(emojis);
+    if(emojis != null ) {
+        emojis = emojis.filter(function (value, index, self) {
+            return self.indexOf(value) === index;
+        });
+        return str.concat(emojis);
+    } else { 
+        return str 
+    }
 }
 
 /**
@@ -88,3 +94,5 @@ module.exports = function (phrase, inject, callback) {
         callback(null, result);
     });
 };
+
+
