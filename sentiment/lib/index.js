@@ -11,7 +11,6 @@
 var extend = require('extend-object');
 var afinn = require('../build/AFINN.json');
 var emojiRegex = require('emoji-regex');
-var _ = require('underscore');
 
 /**
  * Tokenizes an input string.
