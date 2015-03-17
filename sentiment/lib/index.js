@@ -11,6 +11,7 @@
 var extend = require('extend-object');
 var afinn = require('../build/AFINN.json');
 var emojiRegex = require('emoji-regex');
+var _ = require('underscore');
 
 /**
  * Tokenizes an input string.
@@ -26,7 +27,8 @@ function tokenize (input) {
             .toLowerCase()
             .split(' ');
     var emojis = input
-                 .match(emojiRegex());
+            .match(emojiRegex());
+    emojis = _.uniq(emojis);
     return str.concat(emojis);
 }
 
