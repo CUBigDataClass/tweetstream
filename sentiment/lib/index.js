@@ -26,8 +26,15 @@ function tokenize (input) {
             .toLowerCase()
             .split(' ');
     var emojis = input
-                 .match(emojiRegex());
-    return str.concat(emojis);
+            .match(emojiRegex());
+    if(emojis != null ) {
+        emojis = emojis.filter(function (value, index, self) {
+            return self.indexOf(value) === index;
+        });
+        return str.concat(emojis);
+    } else { 
+        return str 
+    }
 }
 
 /**
@@ -86,3 +93,5 @@ module.exports = function (phrase, inject, callback) {
         callback(null, result);
     });
 };
+
+
