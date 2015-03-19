@@ -1,0 +1,53 @@
+<html>
+<head>
+  <title>Sample</title>
+  <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
+  <script type="text/javascript">
+    var ge;
+    google.load("earth", "1", {"other_params":"sensor=true_or_false"});
+
+
+    function init() {
+      google.earth.createInstance('map3d', initCB, failureCB);
+    }
+https://github.com/CUBigDataClass/tweetstream/blob/master/tweetcoords.png
+    function initCB(instance) {
+      ge = instance;
+      ge.getWindow().setVisibility(true);
+
+		var link = ge.createLink('');
+		var href = 'https://raw.githubusercontent.com/CUBigDataClass/tweetstream/master/tweetcoords.kml'
+		link.setHref(href);
+
+		var networkLink = ge.createNetworkLink('');
+		networkLink.set(link, true, true); // Sets the link, refreshVisibility, and flyToView
+
+		ge.getFeatures().appendChild(networkLink);
+    }
+
+    function failureCB(errorCode) {
+    }
+
+    //see documentation for kmlNetworkLink at:
+    //https://developers.google.com/earth/documentation/kml#kmlnetworklink
+    function setKML(){
+		var link = ge.createLink('');
+		var href = 'http://code.google.com/'
+		           + 'apis/earth/documentation/samples/kml_example.kml'
+		link.setHref(href);
+
+		var networkLink = ge.createNetworkLink('');
+		networkLink.set(link, true, true); // Sets the link, refreshVisibility, and flyToView
+
+		ge.getFeatures().appendChild(networkLink);
+    }
+
+    google.setOnLoadCallback(init);
+    setKML();
+  </script>
+
+</head>
+<body>
+  <div id="map3d" style="height: 400px; width: 600px;"></div>
+</body>
+</html>
