@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Folder>
+    <description>Tweet heatmap over London, England</description>
     <GroundOverlay>
       <Icon>
-        <href>tweetcoords.png</href>
+        <href>https://github.com/CUBigDataClass/tweetstream/blob/master/tweetcoords.png</href>
       </Icon>
       <LatLonBox>
-        <north>0.2727200000000000</north>
-        <south>-0.7005980000000001</south>
-        <east>51.0843180000000032</east>
-        <west>52.0235569999999967</west>
+        <north>52.023555</north>
+        <south>51.084318</south>
+        <east>0.27272</east>
+        <west>-0.700598</west>
         <rotation>0</rotation>
       </LatLonBox>
     </GroundOverlay>
