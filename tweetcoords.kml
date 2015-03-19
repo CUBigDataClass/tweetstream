@@ -4,7 +4,7 @@
     <description>Tweet heatmap over London, England</description>
     <GroundOverlay>
       <Icon>
-        <href>https://github.com/CUBigDataClass/tweetstream/blob/master/tweetcoords.png</href>
+        <href>https://raw.githubusercontent.com/CUBigDataClass/tweetstream/master/tweetcoords.png</href>
       </Icon>
       <LatLonBox>
         <north>52.023555</north>
