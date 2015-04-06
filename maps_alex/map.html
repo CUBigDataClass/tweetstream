@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="../node_modules/datamaps/dist/datamaps.world.min.js"></script>
+</head>
+<body>
+<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
+
+<script>
+    var map = new Datamap({
+        element: document.getElementById('container'),
+        scope: 'world',
+          geographyConfig: {
+            popOnHover: true,
+            highlightOnHover: true,
+          },
+          fills: {
+            'RUS': 'blue',
+            defaultFill: false
+          },
+          data: {
+            'RUS': {fillKey: 'RUS'}
+          }
+    });
+    var sent = [
+      {
+          radius:10,
+          created_at: "Fri Feb 20 01:14:04 +0000 2015",
+          text: "so proud of my team 🎀💟",
+          longitude:-115.126334,
+          latitude:36.217745,
+          sentiment: 2,
+      },
+      {
+          radius:25,
+          created_at: "Fri Feb 20 01:14:04 +0000 2015",
+          text: "sSome tweet",
+        latitude: 73.482,
+        longitude: 54.5854
+      }
+    ];
+    map.bubbles(sent, {
+      popupTemplate: function (geo, data) { 
+              return ['<div class="hoverinfo">' +  data.text,
+              '<br/>created_at: ' +  data.created_at,
+              '<br/>Sentiment: ' +  data.sentiment + '',
+              '</div>'].join('');
+      }
+    });
+</script>
+
+
+</body>
+</html>

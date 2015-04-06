@@ -1,6 +1,5 @@
 var Twit   = require('twit'), // wrapper on top of twitter api
   dotenv   = require('dotenv'), // used for keys -> get from .env
-  sentiment = require('../sentiment'),
   fs        = require('fs'),
   Tweet     = require('./mongo.js').tweetInit();
 
@@ -27,7 +26,6 @@ dotenv.load();
         Tweet.create(tweet, function(err,doc){
           if(err) throw err;
           console.log(tweet.text);
-        console.log(sentiment(tweet.text));
         })
       }
     })
@@ -62,7 +60,6 @@ dotenv.load();
       if(tweet.text.indexOf("😃") > -1 && tweet.lang=="en"){
         var obj = JSON.stringify(tweet);
         console.log(tweet.text);
-        console.log(sentiment(tweet.text));
       }
     })
   }

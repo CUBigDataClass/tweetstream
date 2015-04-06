@@ -1,6 +1,6 @@
 var mongoose    = require('mongoose'),
     db          = require('../tweet_collector/mongo.js').tweetInit(),
-    sentiment   = require('../sentiment'),
+    sentiment   = require('../../sentiment'),
     afinn       = require('../sentiment/build/AFINN.json'),
     emojiRegex  = require('emoji-regex');
 
@@ -24,9 +24,6 @@ o.scope = {
     var emojis = input
             .match(emojiRegex());
     if(emojis != null ) {
-        emojis = emojis.filter(function (value, index, self) {
-            return self.indexOf(value) === index;
-        });
         return str.concat(emojis);
     }
     return str
