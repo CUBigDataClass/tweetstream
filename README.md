@@ -19,3 +19,10 @@ Start server and you should see incoming tweets and their sentiment analysis pri
 ```
 npm start
 ```
+
+## Map Reduce
+Found in ```/mapreduce/``` 
+
+ ```process_data.js``` processes the raw twitter data and extracts the text, location, and performs sentiment analysis on the tweet.
+ 
+ ```flatten.js``` transforms the processed data to a format that works with the front end maps.
