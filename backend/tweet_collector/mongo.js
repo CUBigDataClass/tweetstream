@@ -5,7 +5,7 @@ mongoose.connect('mongodb://Zandrr:password@ds047911.mongolab.com:47911/twitters
 
 var Any = new mongoose.Schema({ any: mongoose.Schema.Types.Mixed },{ strict: false });
 function tweetInit(){
-  return mongoose.model('Tweet', Any, 'sent_test');
+  return mongoose.model('Tweet', Any, 'test');
 }
 
 
