@@ -1,7 +1,7 @@
 var mongoose    = require('mongoose'),
     db          = require('../tweet_collector/mongo.js').tweetInit(),
-    sentiment   = require('./sentiment'),
-    afinn       = require('./sentiment/build/AFINN.json'),
+    sentiment   = require('../../sentiment'),
+    afinn       = require('../../sentiment/build/AFINN.json'),
     emojiRegex  = require('emoji-regex');
 
 var o = {};
