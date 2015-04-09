@@ -1,8 +1,13 @@
+var args = process.argv.slice(2);
+var rawdb = String(args[0]);
+var outputdb = String(args[1]);
+
 var mongoose    = require('mongoose'),
-    db          = require('../tweet_collector/mongo.js').tweetInit(),
+    db          = require('../tweet_collector/mongo.js').tweetInit(rawdb), // raw db
     sentiment   = require('./sentiment'),
     afinn       = require('./sentiment/build/AFINN.json'),
-    emojiRegex  = require('emoji-regex');
+    emojiRegex  = require('emoji-regex'),
+    flattenHelper     = require('./flatten.js'); // flattened db
 
 var o = {};
 
@@ -12,7 +17,7 @@ o.map = function(){
 };
 
 o.reduce = function(key,values){return values[0];};
-o.out = {replace:"sent_test"};
+o.out = {replace:"intermediate"}; // intermediary db
 o.scope = {
     getsentiment:sentiment, 
     tokenize:function tokenize (input) {
@@ -36,4 +41,6 @@ db.mapReduce(o, function(err,model, stats){
   if(err) console.log(err);
     console.log('map reduce took %d ms', stats.processtime);
     mongoose.connection.close();
-});
+}).then(flattenHelper.flatten(outputdb));
+
+
