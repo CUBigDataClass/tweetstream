@@ -1,5 +1,5 @@
 var db        = require('./mongo.js');
-var Tweet = db.tweetInit('test');
+var Tweet = db.tweetInit('test_flattened');
 
 
 module.exports = function(app){

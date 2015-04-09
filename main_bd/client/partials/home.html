@@ -1,12 +1,29 @@
-<script src="../../bower_components/d3/d3.min.js"></script>
-<script src="../../bower_components/topojson/topojson.js"></script>
-<script src="../../bower_components/datamaps/dist/datamaps.all.min.js"></script>
-<script src="../../bower_components/angular-datamaps/dist/angular-datamaps.min.js"></script>
+<!-- <script src="../vendor/d3.min.js"></script>
+<script src="../vendor/topojson.js"></script>
+<script src="../vendor/datamaps.all.min.js"></script>
+<script src="../vendor/angular-datamaps.min.js"></script>
 
 <datamap
   options="map.options"
   data="map.data"
   colors="map.colors"
   type="{{ map.type }}"
+  on-click="updateActiveGeography"
   >
-</datamap>
+</datamap> -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="../vendor/datamaps.all.min.js"></script>
+</head>
+<body>
+<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
+{{getBubbles(map,sent)}}
+{{sent}}
+
+</body>
+</html>
