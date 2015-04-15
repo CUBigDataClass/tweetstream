@@ -13,7 +13,7 @@ var Twit   = require('twit'), // wrapper on top of twitter api
   p = argv.p || 0,
   a = argv.a || 0,
   producer = new Producer(client, { requireAcks: 1 });
-  
+
 dotenv.load();
 
   var T = new Twit({
@@ -37,6 +37,7 @@ producer.on('ready', function () {
         });
       }
         var ret = q.shift();
+        ret = JSON.stringify(ret);
         var toSend = [{ topic: topic, partition: p, messages: ret, attributes: a }];
         if(ret !== undefined){
           producer.send(toSend, function (err, result) {
