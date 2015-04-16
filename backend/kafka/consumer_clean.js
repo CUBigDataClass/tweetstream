@@ -3,9 +3,12 @@
 var kafka = require('kafka-node');
 var Consumer = kafka.Consumer;
 var Offset = kafka.Offset;
+var getSentiment = require("../mapreduce/sentiment");
+var getState     = require("../mapreduce/statefinder.js");
 var Client = kafka.Client;
 var argv = require('optimist').argv;
 var topic = argv.topic || 'tweets';
+var db = require('../tweet_collector/mongo.js').tweetInit('test_raw3');
 
 var client = new Client('localhost:2181');
 var topics = [
@@ -17,7 +20,19 @@ var consumer = new Consumer(client, topics, options);
 var offset = new Offset(client);
 
 consumer.on('message', function (message) {
-    console.log(message);
+    message = JSON.parse(message.value);
+    var q = [];
+    var sent = getSentiment(message.text);
+
+
+    if(message.geo !== undefined){
+        getState.getGeotagByLL(message.geo.coordinates[0]+","+message.geo.coordinates[1]).then(function(val){
+          q = {created_at:message.created_at, text: message.text, longitude:message.geo.coordinates[1], latitude:message.geo.coordinates[0], sentiment:sent.score, state: val.region, city: val.city, radius: 5};
+            db.create(q, function(err,doc){
+                if(err) throw err;
+            })
+        });
+    }
 });
 
 consumer.on('error', function (err) {
