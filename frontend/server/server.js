@@ -7,7 +7,7 @@ var express     = require('express'),
 
 fs.realpath(__dirname + '/../', function (err, projectRoot) {
     var app = express(); // Make app using Express framework
-    app.set('port', process.env.PORT || 3000);
+    app.set('port', process.env.PORT || 49152);
     app.set('env', process.env.NODE_ENV || 'development');
 
     app.use(bodyParser.urlencoded({ extended: false }));
