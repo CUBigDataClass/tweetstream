@@ -1,8 +1,5 @@
 var Twit   = require('twit'), // wrapper on top of twitter api
   dotenv   = require('dotenv'), // used for keys -> get from .env
-  fs        = require('fs'),
-  getSentiment = require("../mapreduce/sentiment"),
-  getState     = require("../mapreduce/statefinder.js");
   kafka = require('kafka-node'),
   Producer = kafka.Producer,
   KeyedMessage = kafka.KeyedMessage,
@@ -31,10 +28,7 @@ producer.on('ready', function () {
 
     stream.on('tweet', function(tweet){
       if(tweet.geo != null && tweet.lang == "en" && tweet.place.country_code == "US"){
-        var sent = getSentiment(tweet.text);
-        getState.getGeotagByLL(tweet.geo.coordinates[0]+","+tweet.geo.coordinates[1]).then(function(val){
-          q.push({created_at:tweet.created_at, text: tweet.text, longitude:tweet.geo.coordinates[1], latitude:tweet.geo.coordinates[0], sentiment:sent.score, state:val.region});
-        });
+          q.push(tweet);
       }
         var ret = q.shift();
         ret = JSON.stringify(ret);
