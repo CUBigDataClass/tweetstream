@@ -1,18 +1,17 @@
-var Twit   = require('twit'), // wrapper on top of twitter api
-  dotenv   = require('dotenv'), // used for keys -> get from .env
-  fs        = require('fs'),
-  getSentiment = require("../mapreduce/sentiment"),
-  getState     = require("../mapreduce/statefinder.js");
-  kafka = require('kafka-node'),
-  Producer = kafka.Producer,
+var Twit       = require('twit'), // wrapper on top of twitter api
+  dotenv       = require('dotenv'), // used for keys -> get from .env
+  getSentiment = require("../sentiment"),
+  getState     = require("../statefinder.js");
+  kafka        = require('kafka-node'),
+  Producer     = kafka.Producer,
   KeyedMessage = kafka.KeyedMessage,
-  Client = kafka.Client,
-  client = new Client('localhost:2181'),
-  argv = require('optimist').argv,
-  topic = argv.topic || 'tweets',
-  p = argv.p || 0,
-  a = argv.a || 0,
-  producer = new Producer(client, { requireAcks: 1 });
+  Client       = kafka.Client,
+  client       = new Client('localhost:2181'),
+  argv         = require('optimist').argv,
+  topic        = argv.topic || 'tweets',
+  p            = argv.p || 0,
+  a            = argv.a || 0,
+  producer     = new Producer(client, { requireAcks: 1 });
 
 dotenv.load();
 
