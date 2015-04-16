@@ -9,7 +9,6 @@ var topic = argv.topic || 'tweets';
 
 var client = new Client('localhost:2181');
 var topics = [
-        {topic: topic, partition: 1},
         {topic: topic, partition: 0}
     ],
     options = { autoCommit: false, fetchMaxWaitMs: 1000, fetchMaxBytes: 1024*1024 };
