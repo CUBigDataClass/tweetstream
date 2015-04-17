@@ -3,6 +3,9 @@ angular.module('app').controller('HomeController', [
   '$http',
 
   function($scope,$http){
+
+  
+
   $scope.map = new Datamap({
     element: document.getElementById('container'),
     scope: 'usa',
@@ -15,6 +18,8 @@ angular.module('app').controller('HomeController', [
         // alert(geography.properties.name);
         var state = geography.properties.name
         if(state == "Pennsylvania") state = "penna"
+         $scope.state = state;
+         $scope.liveTweets = []
          $http({
             method: 'GET',
             url: '/tweets/'+state
@@ -24,14 +29,11 @@ angular.module('app').controller('HomeController', [
             for(var index in tweets.data){
               tweetSent = tweets.data[index].sentiment
               totalSent += tweetSent
+              $scope.liveTweets.push(tweets.data[index])
             }
 
-            averageSent = totalSent/(tweets.data.length)
-            // console.log(totalSent)
-            // console.log(tweets.data.length)
-            console.log("average" + averageSent)
-
-
+            averageSent = totalSent/(tweets.data.length);
+            $scope.averageSent = averageSent;
            });
         });
       }
