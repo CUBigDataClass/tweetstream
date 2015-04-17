@@ -21,16 +21,21 @@ module.exports = function(app){
   });
 
   app.get('/stream', function(req, res){
-  	// var stream = Tweet.find({state:"Texas"}).stream()
-  	// stream.on('data', function(doc){
-  	// 	res.status(200).send(doc)
-  	// }).on('error', function(err){
-  	// 	if (err) throw err
-  	// })
+  	var stream = Tweet.find({state:"Texas"}).stream()
+  	stream.on('data', function(doc){
+  		res.status(200).send(doc)
+  	}).on('error', function(err){
+  		if (err) throw err
+  	})
 
-  	Tweet.find({ state: "Texas" }).stream().pipe(res)
+  	// Tweet.find({ state: "Texas" }).stream().pipe(res)
+  })
 
-  	// Tweet.find().stream().pipe(res);
+  app.get('/tweets/:state', function(req,res){
+  	Tweet.find({state:req.params.state}, function(err, doc){
+  		if(err) res.send(err)
+  		res.status(200).send(doc)
+  	})
   })
 
 
