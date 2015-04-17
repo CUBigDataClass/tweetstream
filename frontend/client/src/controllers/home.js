@@ -3,14 +3,6 @@ angular.module('app').controller('HomeController', [
   '$http',
 
   function($scope,$http){
-
-   $http({
-    method: 'GET',
-    url: '/tweets'
-   }).then(function(tweets){
-    $scope.sent = tweets.data;
-   });
-
   $scope.map = new Datamap({
     element: document.getElementById('container'),
     scope: 'usa',
@@ -21,9 +13,11 @@ angular.module('app').controller('HomeController', [
      done: function(datamap) {
           datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
               // alert(geography.properties.name);
+              var state = geography.properties.name
+              if(state == "Pennsylvania") state = "penna"
                $http({
                   method: 'GET',
-                  url: '/tweets/'+geography.properties.name
+                  url: '/tweets/'+state
                  }).then(function(tweets){
                   $scope.sent = tweets.data;
                  });
