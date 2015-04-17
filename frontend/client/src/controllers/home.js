@@ -13,19 +13,12 @@ angular.module('app').controller('HomeController', [
 
 $scope.map = new Datamap({
         element: document.getElementById('container'),
-        scope: 'world',
+        scope: 'usa',
           geographyConfig: {
             popOnHover: true,
             highlightOnHover: true,
-          },
-          fills: {
-            'TX': "#FFCC9",
-            defaultFill: "grey"
-          },
-          data: {
-            'TX': {fillKey: 'TX'}
           }
-    });
+       });
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
         popupTemplate: function (geo, data) { 

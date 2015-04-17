@@ -1,5 +1,5 @@
 var db        = require('./mongo.js');
-var Tweet = db.tweetInit('test_flattened');
+var Tweet = db.tweetInit('processed_data');
 
 
 module.exports = function(app){
@@ -19,6 +19,19 @@ module.exports = function(app){
       res.status(200).send(doc);
     });
   });
+
+  app.get('/stream', function(req, res){
+  	// var stream = Tweet.find({state:"Texas"}).stream()
+  	// stream.on('data', function(doc){
+  	// 	res.status(200).send(doc)
+  	// }).on('error', function(err){
+  	// 	if (err) throw err
+  	// })
+
+  	Tweet.find({ state: "Texas" }).stream().pipe(res)
+
+  	// Tweet.find().stream().pipe(res);
+  })
 
 
 };
