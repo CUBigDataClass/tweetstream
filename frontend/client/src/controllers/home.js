@@ -38,6 +38,25 @@ $scope.map = new Datamap({
     }
 
 
+    $scope.getTweetText = function(sent){
+      var div = document.getElementById("sidebar");
+      div.textContent = 'Tweet Text:';
+      var l = sent.length;
+      //todo: add a button to view tweets 1-10, 10-20, etc if l is huge 
+      if (l < 10){
+        for (var i = 0; i < l; i++) {
+            div.textContent += sent[i].text;
+        }
+      }else {
+          for (var i = 0; i < 10; i++) {
+            div.textContent += sent[i].text;
+        }
+
+      }
+      var text = div.textContent;
+     }
+
+
 
 }
 

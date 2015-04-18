@@ -1,3 +1,18 @@
 p {
   color: green;
 }
+
+sidebar {
+  float: right;
+  position: fixed;
+  height: 400px;
+  margin-right: 10px;
+  right: 0;
+  top: 85px;
+  overflow-y:scroll;
+  width:300px;
+  .content_sidebar{
+  width:300px;
+  word-wrap: break-word;
+  text-align:center;
+}
