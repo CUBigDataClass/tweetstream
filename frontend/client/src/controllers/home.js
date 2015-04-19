@@ -18,10 +18,15 @@ angular.module('app').controller('HomeController', [
       geographyConfig: {
         popOnHover: true,
         highlightOnHover: false,
+        popupTemplate: function(geography, data) {
+            return '<div class="hoverinfo">' + geography.properties.name 
+        }
       },
       data: stateJSON = returnStateJSON(),
       fills: {
-        defaultFill: '#99CC99'
+        defaultFill: '#99CC99',
+        negative: '#ff4c4c',
+        positive: '#6666FF'
       },
      done: function(datamap) {
         datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
@@ -34,6 +39,7 @@ angular.module('app').controller('HomeController', [
             method: 'GET',
             url: '/tweets/'+state
            }).then(function(tweets){
+            console.log(typeof(tweets.data))
             $scope.sent = tweets.data;
             var totalSent = 0;
             for(var index in tweets.data){
@@ -43,14 +49,12 @@ angular.module('app').controller('HomeController', [
             }
 
             averageSent = totalSent/(tweets.data.length);
-            // $scope.averageSent = averageSent;
             if (averageSent < 0){
-              console.log("true")
-              averageSent = "#ff4c4c"
+              averageSent = '{"fillKey": "negative", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
             } else {
-              console.log("false")
-              averageSent = "#6666FF"
-
+              averageSent = '{"fillKey": "positive", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
             }
             stateJSON = returnStateJSON()
 
@@ -61,9 +65,9 @@ angular.module('app').controller('HomeController', [
         });
       }
    });
-
-    $scope.getBubbles = function(map,sent){
-        map.bubbles(sent, {
+    
+    $scope.getBubbles = function(){
+        $scope.map.bubbles($scope.sent, {
         popupTemplate: function (geo, data) { 
           return ['<div class="hoverinfo">' +  data.text,
           '<br/>created_at: ' +  data.created_at,
