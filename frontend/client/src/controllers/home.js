@@ -4,7 +4,13 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http){
 
-  
+  $http({
+    method: 'GET',
+    url: '/getlatest'
+  }).then(function(tweets){
+    $scope.latest = tweets;
+  })
+
   $scope.map = new Datamap({
 
     element: document.getElementById('container'),
@@ -38,7 +44,6 @@ angular.module('app').controller('HomeController', [
 
             averageSent = totalSent/(tweets.data.length);
             // $scope.averageSent = averageSent;
-            console.log(averageSent)
             if (averageSent < 0){
               console.log("true")
               averageSent = "#ff4c4c"
@@ -51,7 +56,6 @@ angular.module('app').controller('HomeController', [
 
             var stateKey = String(geography.id)
             stateJSON[stateKey] = averageSent
-            console.log(stateJSON)
             datamap.updateChoropleth(stateJSON);
            });
         });
@@ -68,17 +72,6 @@ angular.module('app').controller('HomeController', [
         }
       });
     }
-
-    window.setInterval(function(){
-      $http({
-        method: 'GET',
-        url: '/getlatest'
-      }).then(function(tweets){
-        $scope.latest = tweets.data;
-        console.log(tweets.data)
-      })
-
-    }, 2000)
   }
 
   
