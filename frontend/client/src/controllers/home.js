@@ -66,23 +66,15 @@ angular.module('app').controller('HomeController', [
       }
    });
 
+   //  $scope.word = '';
+   // $scope.query = function () {
    //  $http({
-   //    method: 'GET',
-   //    url: "/tweets",
+   //      method: 'GET',
+   //      url: '/tweets_search'+'/'+$scope.word,
    //   }).then(function(tweets){
-   //    $scope.sent = tweets.data;
-   // });
-
-
-    $scope.word = '';
-   $scope.query = function () {
-    $http({
-        method: 'GET',
-        url: '/tweets_search'+'/'+$scope.word,
-     }).then(function(tweets){
-        $scope.sent = tweets.data;
-     });
-    }
+   //      $scope.sent = tweets.data;
+   //   });
+   //  }
 
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
@@ -94,7 +86,10 @@ angular.module('app').controller('HomeController', [
         }
       });
     }
-  }
+
+
+}
+
 ]);
 
 
