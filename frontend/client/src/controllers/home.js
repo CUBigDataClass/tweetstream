@@ -65,9 +65,27 @@ angular.module('app').controller('HomeController', [
         });
       }
    });
-    
-    $scope.getBubbles = function(){
-        $scope.map.bubbles($scope.sent, {
+
+   //  $http({
+   //    method: 'GET',
+   //    url: "/tweets",
+   //   }).then(function(tweets){
+   //    $scope.sent = tweets.data;
+   // });
+
+
+    $scope.word = '';
+   $scope.query = function () {
+    $http({
+        method: 'GET',
+        url: '/tweets_search'+'/'+$scope.word,
+     }).then(function(tweets){
+        $scope.sent = tweets.data;
+     });
+    }
+
+  $scope.getBubbles = function(map,sent){
+        map.bubbles(sent, {
         popupTemplate: function (geo, data) { 
           return ['<div class="hoverinfo">' +  data.text,
           '<br/>created_at: ' +  data.created_at,
@@ -77,8 +95,6 @@ angular.module('app').controller('HomeController', [
       });
     }
   }
-
-  
 ]);
 
 

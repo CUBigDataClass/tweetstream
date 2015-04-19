@@ -1,6 +1,7 @@
 var db        = require('./mongo.js');
 var Tweet = db.tweetInit('processed_data');
 
+
 module.exports = function(app){
 	
   app.get('/', function(req, res) {
@@ -18,14 +19,23 @@ module.exports = function(app){
     });
   });
 
-  // app.get('/stream', function(req, res){
-  // 	var stream = Tweet.find({state:"Texas"}).stream()
-  // 	stream.on('data', function(doc){
-  // 		res.status(200).send(doc)
-  // 	}).on('error', function(err){
-  // 		if (err) throw err
-  // 	})
-  // })
+
+  app.get('/tweets_search/:word', function(req,res){
+    if(req.params.word){
+      Tweet.find({text: { "$regex": req.params.word, "$options": "i" }}).find(function(err,doc){
+        if(err) throw err;
+        res.status(200).send(doc);
+        console.log(doc);
+      });
+    }else{
+      Tweet.find(function(err,doc){
+        if(err) throw err;
+        res.status(200).send(doc);
+        console.log(doc);
+      });
+    }
+  });
+
 
 
 // ***
