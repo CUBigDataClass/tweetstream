@@ -6,10 +6,21 @@ angular.module('app').controller('HomeController', [
 
    $http({
     method: 'GET',
-    url: '/tweets'
+    url: "/tweets",
    }).then(function(tweets){
     $scope.sent = tweets.data;
    });
+
+
+    $scope.word = '';
+   $scope.query = function () {
+    $http({
+        method: 'GET',
+        url: '/tweets'+'/'+$scope.word,
+     }).then(function(tweets){
+        $scope.sent = tweets.data;
+     });
+    }
 
 $scope.map = new Datamap({
         element: document.getElementById('container'),
@@ -36,9 +47,6 @@ $scope.map = new Datamap({
         }
       });
     }
-
-
-
 }
 
 

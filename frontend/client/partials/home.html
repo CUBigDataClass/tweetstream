@@ -21,8 +21,15 @@
 <script src="../vendor/datamaps.all.min.js"></script>
 </head>
 <body>
-<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
+<div>
+  Your word:
+  <form ng:submit="query()">
+    <input type="text" ng-model="word">
+  </form>
+
+</div>
 {{getBubbles(map,sent)}}
+<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
 
 </body>
 </html>
