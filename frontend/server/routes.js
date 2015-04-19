@@ -1,10 +1,8 @@
 var db        = require('./mongo.js');
 var Tweet = db.tweetInit('processed_data');
 
-
 module.exports = function(app){
-
-
+	
   app.get('/', function(req, res) {
     res.render('index');
   });
@@ -20,24 +18,34 @@ module.exports = function(app){
     });
   });
 
-  app.get('/stream', function(req, res){
-  	var stream = Tweet.find({state:"Texas"}).stream()
-  	stream.on('data', function(doc){
-  		res.status(200).send(doc)
-  	}).on('error', function(err){
-  		if (err) throw err
-  	})
+  // app.get('/stream', function(req, res){
+  // 	var stream = Tweet.find({state:"Texas"}).stream()
+  // 	stream.on('data', function(doc){
+  // 		res.status(200).send(doc)
+  // 	}).on('error', function(err){
+  // 		if (err) throw err
+  // 	})
+  // })
 
-  	// Tweet.find({ state: "Texas" }).stream().pipe(res)
-  })
 
+// ***
+// Gets Tweets from a certain state
+// ***
   app.get('/tweets/:state', function(req,res){
-  	Tweet.find({state:req.params.state}, function(err, doc){
-  		if(err) res.send(err)
-  		res.status(200).send(doc)
+  	var q = Tweet.find({state:req.params.state}).limit(2000);
+  	q.exec(function(err, tweets){
+  		if (err) throw err
+  		res.status(200).send(tweets);
   	})
   })
 
-
+// ***
+// Gets 10 latest tweets
+// ***
+  app.get('/getlatest', function(req,res){
+  	Tweet.find({}).sort({created_at: -1}).limit(10).exec(function(err,tweet){
+	  res.status(200).send(tweet)
+	})
+  })
 };
 
