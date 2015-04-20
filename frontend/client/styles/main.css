@@ -6,11 +6,11 @@ p {
   float: right;
   position: fixed;
   height: 400px;
-  margin-right: 100px;
+  margin-right: 25px;
   right: 0;
   top: 85px;
   overflow-y:scroll;
-  width:300px;
+  width:500px;
   /*border: 2px solid black;
   background-color: Aqua;*/
   opacity: 0.6
