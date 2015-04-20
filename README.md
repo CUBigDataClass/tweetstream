@@ -1,5 +1,5 @@
 # twitterstream
-Simple express app that streams in a sample of live tweets, these tweets are then run through a 3rd party sentiment analysis library and given a score Implemented using Node.js and Express.
+MEAN app that streams in a sample of live tweets using a kafka producer/consumer model, these tweets are then run through a 3rd party sentiment analysis library and given a score Implemented using Node.js and Express.  The maps are displayed in Angular.js and D3.js.
 
 ## To Run: 
  Add a file named ".env" that contains your twitter API keys in the root directory. It should be in the following format:
@@ -20,9 +20,10 @@ Start server and you should see incoming tweets and their sentiment analysis pri
 npm start
 ```
 
-## Map Reduce
-Found in ```/mapreduce/``` 
+The app is currently running at:
 
- ```process_data.js``` processes the raw twitter data and extracts the text, location, and performs sentiment analysis on the tweet.
- 
- ```flatten.js``` transforms the processed data to a format that works with the front end maps.
+http://54.149.243.161:49152/
+
+But it will probably go down randomly as it's still being developed.
+
+
