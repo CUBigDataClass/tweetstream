@@ -9,6 +9,9 @@ var Client = kafka.Client;
 var argv = require('optimist').argv;
 var topic = argv.topic || 'tweets';
 var db = require('../tweet_collector/mongo.js').tweetInit('processed_data');
+var unirest = require('unirest');
+var Q = require('q');
+
 
 var client = new Client('localhost:2181');
 var topics = [
@@ -22,15 +25,26 @@ var offset = new Offset(client);
 consumer.on('message', function (message) {
     message = JSON.parse(message.value);
     var q = [];
-    var sent = getSentiment(message.text);
 
+    //sentiment stuff
+    var deferred = Q.defer();
+    unirest.post("https://community-sentiment.p.mashape.com/text/")
+        .header("X-Mashape-Key", "W0XfNKn3JJmsh0Pq0bsfmunVYrOvp1BSVkLjsn6IP3xd0N2ChB")
+        .header("Content-Type", "application/x-www-form-urlencoded")
+        .header("Accept", "application/json")
+        .send("txt="+message.text)
+        .end(function (result) {
+          deferred.resolve(result.body.result);
+        });
 
     if(message.geo !== undefined){
-        getState.getGeotagByLL(message.geo.coordinates[0]+","+message.geo.coordinates[1]).then(function(val){
-          q = {created_at:message.created_at, text: message.text, longitude:message.geo.coordinates[1], latitude:message.geo.coordinates[0], sentiment:sent.score, state: val.region, city: val.city, radius: 5};
-            db.create(q, function(err,doc){
-                if(err) throw err;
-            })
+        deferred.promise.then(function(sent){
+            getState.getGeotagByLL(message.geo.coordinates[0]+","+message.geo.coordinates[1]).then(function(state){
+              q = {created_at:message.created_at, text: message.text, longitude:message.geo.coordinates[1], latitude:message.geo.coordinates[0], sentiment:sent.confidence, state: state.region, city: state.city, radius: 5};
+                db.create(q, function(err,doc){
+                    if(err) throw err;
+                })
+            });
         });
     }
 });
