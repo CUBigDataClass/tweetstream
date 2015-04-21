@@ -44,18 +44,10 @@ table tr:nth-child(even) {
     <label for="from">Search:</label>
     <input type="text" ng-model="word" id="word">
     <label for="start">Start Date:</label>
-    <input id="start" ng-model="startDate" value={{(startDate|date)||""}}>
+    <input type="text" id="from" name="from" ng-model="startDate">
     <label for="end">End Date:</label>
-    <input id="end" ng-model="endDate" value={{(endDate|date)||""}}>
-    <span class="dropdown">
-      <a class="dropdown-toggle btn btn-danger">
-        {{(startDate|date)||"pick start"}} - {{(endDate|date)||"pick end"}}
-      </a>
+    <input type="text" id="to" name="to" ng-model="endDate">
 
-      <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
-        <div date-range start="startDate" end="endDate"></div>
-      </div>
-    </span>
     <input type="submit" id="submit" value="Submit" />
   </form>
 </div>
