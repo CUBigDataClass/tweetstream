@@ -4,35 +4,125 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http){
 
-   $http({
+  $http({
     method: 'GET',
-    url: '/tweets'
-   }).then(function(tweets){
-    $scope.sent = tweets.data;
+    url: '/getlatest'
+  }).then(function(tweets){
+    $scope.latest = tweets;
+  })
+
+  $scope.map = new Datamap({
+
+    element: document.getElementById('container'),
+    scope: 'usa',
+      geographyConfig: {
+        popOnHover: true,
+        highlightOnHover: false,
+        popupTemplate: function(geography, data) {
+            return '<div class="hoverinfo">' + geography.properties.name 
+        }
+      },
+      data: stateJSON = returnStateJSON(),
+      fills: {
+        defaultFill: '#99CC99',
+        negative: '#ff4c4c',
+        positive: '#6666FF'
+      },
+     done: function(datamap) {
+        datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+        // alert(geography.properties.name);
+        var state = geography.properties.name
+        if(state == "Pennsylvania") state = "penna"
+         $scope.state = state;
+         $scope.stateTweets = []
+         $http({
+            method: 'GET',
+            url: '/tweets/'+state
+           }).then(function(tweets){
+            console.log(typeof(tweets.data))
+            $scope.sent = tweets.data;
+            var totalSent = 0;
+            for(var index in tweets.data){
+              tweetSent = tweets.data[index].sentiment
+              totalSent += tweetSent
+              $scope.stateTweets.push(tweets.data[index])
+            }
+
+            averageSent = totalSent/(tweets.data.length);
+            if (averageSent < 0){
+              averageSent = '{"fillKey": "negative", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
+            } else {
+              averageSent = '{"fillKey": "positive", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
+            }
+            stateJSON = returnStateJSON()
+
+            var stateKey = String(geography.id)
+            stateJSON[stateKey] = averageSent
+            datamap.updateChoropleth(stateJSON);
+           });
+        });
+      }
    });
 
-$scope.map = new Datamap({
-        element: document.getElementById('container'),
-        scope: 'usa',
-          geographyConfig: {
-            popOnHover: true,
-            highlightOnHover: true,
-          },
-          fills: {
-            'TX': "#FFCC9",
-            defaultFill: "grey"
-          },
-          data: {
-            'TX': {fillKey: 'TX'}
-          }
-    });
+    $scope.word = '';
+    $scope.query = function () {
+     $http({
+         method: 'GET',
+         url: '/tweets_search'+'/'+$scope.word,
+      }).then(function(tweets){
+         
+
+ 
+
+
+         $scope.sent = tweets.data;
+         $scope.stateFills = {}
+
+         for (var index in tweets.data){
+          current_State = tweets.data[index].state;
+          $scope.stateFills[current_State] = 0;
+         }
+
+         for(var index in tweets.data){
+          current_State = tweets.data[index].state;
+          $scope.stateFills[current_State] += tweets.data[index].sentiment;
+         }
+
+         //debuggin'
+         // console.log("my state fills:")
+         // console.log($scope.stateFills)
+
+
+         stateJSON = returnStateJSON()
+         for (var key in $scope.stateFills){
+            if ($scope.stateFills[key] < 0) {
+
+              averageSent = '{"fillKey": "negative", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
+            } else {
+              averageSent = '{"fillKey": "positive", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
+            }
+            var statekeys = returnStateKeysJSON();
+            var stateKey = statekeys[String(key)]
+            stateJSON[stateKey] = averageSent
+         }
+
+
+        $scope.map.updateChoropleth(stateJSON);
+
+       });
+     }
+
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
         popupTemplate: function (geo, data) { 
-                return ['<div class="hoverinfo">' +  data.text,
-                '<br/>created_at: ' +  data.created_at,
-                '<br/>Sentiment: ' +  data.sentiment + '',
-                '</div>'].join('');
+          return ['<div class="hoverinfo">' +  data.text,
+          '<br/>created_at: ' +  data.created_at,
+          '<br/>Sentiment: ' +  data.sentiment + '',
+          '</div>'].join('');
         }
       });
     }
@@ -40,8 +130,4 @@ $scope.map = new Datamap({
 
 }
 
-
 ]);
-
-
-

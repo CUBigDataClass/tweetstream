@@ -2,7 +2,6 @@
 <script src="../vendor/topojson.js"></script>
 <script src="../vendor/datamaps.all.min.js"></script>
 <script src="../vendor/angular-datamaps.min.js"></script>
-
 <datamap
   options="map.options"
   data="map.data"
@@ -21,34 +20,40 @@
 <script src="../vendor/datamaps.all.min.js"></script>
 
 
-<!-- styling for table -->
 <style>
+
 table, th , td  {
-  border: 1px solid grey;
-  border-collapse: collapse;
-  padding: 10px;
-}
-table tr:nth-child(odd)	{
-  background-color: #ADD8E6;
-}
-table tr:nth-child(even) {
-  background-color: #ffffff;
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 10px;
+  }
+  table tr:nth-child(odd) {
+    background-color: #ADD8E6;
+  }
+  table tr:nth-child(even) {
+    background-color: #ffffff;
+  }
 }
 </style>
 
-
 </head>
 <body>
-<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
-{{getBubbles(map,sent)}}
+<div>
+ Your word:
+  <form ng:submit="query()">
+    <input type="text" ng-model="word">
+  </form>
 
+ </div>
+{{getBubbles(map,sent)}}
+<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
 
 
 
 <div id="sidebar" class="sidebar"> 
 <sidebar>
 <table>
-  <tr ng-repeat="x in sent | limitTo: 100">
+  <tr ng-repeat="x in sent | limitTo: 100" ng-style="border: 1px solid grey; border-collapse: collapse; padding: 10px;">
     <td>{{ x.text }}</td>
     <td>{{ x.state }}</td>
     <td>{{ x.city }}</td>
