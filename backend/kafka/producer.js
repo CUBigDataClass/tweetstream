@@ -29,8 +29,10 @@ producer.on('ready', function () {
     var q = [];
 
     stream.on('tweet', function(tweet){
-      if(tweet.geo != null && tweet.lang == "en" && tweet.place.country_code == "US"){
+      if(tweet.geo != null && tweet.lang == "en" && tweet.place !== null){
+	if(tweet.place.country_code == "US"){
           q.push(tweet);
+	}
       }
         var ret = q.shift();
         ret = JSON.stringify(ret);
