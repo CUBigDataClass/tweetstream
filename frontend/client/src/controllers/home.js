@@ -70,7 +70,8 @@ angular.module('app').controller('HomeController', [
     $scope.query = function () {
      $http({
          method: 'GET',
-         url: '/tweets_search'+'/'+$scope.word,
+         url: '/tweet_filter',
+         params: {word:$scope.word}
       }).then(function(tweets){
          $scope.sent = tweets.data;
      });
