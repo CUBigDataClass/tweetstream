@@ -9,7 +9,7 @@ angular.module('app').controller('HomeController', [
     url: '/getlatest'
   }).then(function(tweets){
     $scope.latest = tweets;
-  })
+  });
 
   $scope.map = new Datamap({
 
@@ -72,9 +72,41 @@ angular.module('app').controller('HomeController', [
          method: 'GET',
          url: '/tweets_search'+'/'+$scope.word,
       }).then(function(tweets){
+
          $scope.sent = tweets.data;
-     });
-     }
+         $scope.stateFills = {}
+
+         for (var index in tweets.data){
+          current_State = tweets.data[index].state;
+          $scope.stateFills[current_State] = 0;
+         }
+
+         for(var index in tweets.data){
+          current_State = tweets.data[index].state;
+          $scope.stateFills[current_State] += tweets.data[index].sentiment;
+         }
+
+         stateJSON = returnStateJSON()
+         for (var key in $scope.stateFills){
+            if ($scope.stateFills[key] < 0) {
+
+              averageSent = '{"fillKey": "negative", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
+            } else {
+              averageSent = '{"fillKey": "positive", "Tweets":"' + String(tweets.data.length) + '"}'
+              averageSent = JSON.parse(averageSent)
+            }
+            var statekeys = returnStateKeysJSON();
+            var stateKey = statekeys[String(key)]
+            stateJSON[stateKey] = averageSent
+         }
+
+
+        $scope.map.updateChoropleth(stateJSON);
+
+       });
+         $scope.sent = tweets.data;
+     };
 
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
@@ -86,11 +118,6 @@ angular.module('app').controller('HomeController', [
         }
       });
     }
-
-
-}
+  }
 
 ]);
-
-
-

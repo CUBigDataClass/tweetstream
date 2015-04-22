@@ -19,7 +19,6 @@ module.exports = function(app){
     });
   });
 
-
   app.get('/tweets_search/:word', function(req,res){
     if(req.params.word){
       Tweet.find({text: { "$regex": req.params.word, "$options": "i" }}).find(function(err,doc){
@@ -35,8 +34,6 @@ module.exports = function(app){
       });
     }
   });
-
-
 
 // ***
 // Gets Tweets from a certain state
