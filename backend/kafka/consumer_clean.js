@@ -8,7 +8,7 @@ var getState     = require("../statefinder.js");
 var Client = kafka.Client;
 var argv = require('optimist').argv;
 var topic = argv.topic || 'tweets';
-var db = require('../tweet_collector/mongo.js').tweetInit('fermcamtest');
+var db = require('../tweet_collector/mongo.js').tweetInit('processed_data');
 
 var client = new Client('localhost:2181');
 var topics = [
