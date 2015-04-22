@@ -1,6 +1,6 @@
 var db        = require('./mongo.js');
 var Tweet = db.tweetInit('processed_data');
-
+var moment = require('moment');
 
 module.exports = function(app){
 	
@@ -23,7 +23,7 @@ module.exports = function(app){
       });
     }
     else if(req.query.startDate && req.query.endDate && req.query.word){
-       Tweet.find({text: { "$regex": req.query.word, "$options": "i" }, {"created_at": {"$gte": new Date(req.query.startDate), "$lt": new Date(req.query.endDate)}}, function(err,tweet){
+       Tweet.find({text: { "$regex": req.query.word, "$options": "i" }, "created_at": {"$gte": new Date(req.query.startDate), "$lt": new Date(req.query.endDate)}}, function(err,tweet){
         res.status(200).send(tweet);
        });
     }
