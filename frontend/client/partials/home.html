@@ -23,7 +23,7 @@
 
 <!-- styling for table -->
 <style>
-table, th , td  {
+/*table, th , td  {
   border: 1px solid grey;
   border-collapse: collapse;
   padding: 10px;
@@ -33,7 +33,7 @@ table tr:nth-child(odd)	{
 }
 table tr:nth-child(even) {
   background-color: #ffffff;
-}
+}*/
 </style>
 
 
@@ -41,14 +41,24 @@ table tr:nth-child(even) {
 <body>
 <div>
  Your word:
-  <form ng:submit="query()">
+  <form ng-submit="query()">
     <input type="text" ng-model="word">
-  </form>
+    <input ng-model="startDate" value={{(startDate|date)}}>
+    <input ng-model="endDate" value={{(endDate|date)}}>
+    <div class="dropdown">
+      <a class="dropdown-toggle btn btn-danger">
+        {{(startDate|date)||"pick start"}} - {{(endDate|date)||"pick end"}}
+      </a>
 
- </div>
+      <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
+        <div date-range start="startDate" end="endDate"></div>
+      </div>
+    </div>
+    <input type="submit" id="submit" value="Submit" />
+  </form>
+</div>
 {{getBubbles(map,sent)}}
 <div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
-
 
 
 <div id="sidebar" class="sidebar"> 

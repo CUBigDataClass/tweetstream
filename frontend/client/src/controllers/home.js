@@ -4,12 +4,7 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http){
 
-  $http({
-    method: 'GET',
-    url: '/getlatest'
-  }).then(function(tweets){
-    $scope.latest = tweets;
-  })
+
 
   $scope.map = new Datamap({
 
@@ -39,7 +34,6 @@ angular.module('app').controller('HomeController', [
             method: 'GET',
             url: '/tweets/'+state
            }).then(function(tweets){
-            console.log(typeof(tweets.data))
             $scope.sent = tweets.data;
             var totalSent = 0;
             for(var index in tweets.data){
@@ -68,14 +62,15 @@ angular.module('app').controller('HomeController', [
 
     $scope.word = '';
     $scope.query = function () {
+      console.log(($scope.startDate))
      $http({
          method: 'GET',
          url: '/tweet_filter',
-         params: {word:$scope.word}
+         params: {word:$scope.word, startDate:String($scope.startDate), endDate:String($scope.endDate)}
       }).then(function(tweets){
          $scope.sent = tweets.data;
      });
-     }
+    }
 
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
@@ -93,5 +88,38 @@ angular.module('app').controller('HomeController', [
 
 ]);
 
+
+// angular.module('app').directive('dateRange', function () {
+//   return {
+//     templateUrl: 'partials/home.html',
+//     scope: {
+//       start: '=',
+//       end: '='
+//     },
+//     link: function (scope, element, attrs) {
+
+//       /*
+//        * If no date is set on scope, set current date from user system
+//        */
+//       scope.start = new Date(scope.start || new Date());
+//       scope.end = new Date(scope.end || new Date());
+
+//       attrs.$observe('disabled', function(isDisabled){
+//           scope.disableDatePickers = !!isDisabled;
+//         });
+//       scope.$watch('start.getTime()', function (value) {
+//         if (value && scope.end && value > scope.end.getTime()) {
+//           scope.end = new Date(value);
+//           console.log(scope.end)
+//         }
+//       });
+//       scope.$watch('end.getTime()', function (value) {
+//         if (value && scope.start && value < scope.start.getTime()) {
+//           scope.start = new Date(value);
+//         }
+//       });
+//     }
+//   };
+// });
 
 
