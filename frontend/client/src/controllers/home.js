@@ -9,7 +9,7 @@ angular.module('app').controller('HomeController', [
     url: '/getlatest'
   }).then(function(tweets){
     $scope.latest = tweets;
-  })
+  });
 
   $scope.map = new Datamap({
 
@@ -72,10 +72,6 @@ angular.module('app').controller('HomeController', [
          method: 'GET',
          url: '/tweets_search'+'/'+$scope.word,
       }).then(function(tweets){
-         
-
- 
-
 
          $scope.sent = tweets.data;
          $scope.stateFills = {}
@@ -89,11 +85,6 @@ angular.module('app').controller('HomeController', [
           current_State = tweets.data[index].state;
           $scope.stateFills[current_State] += tweets.data[index].sentiment;
          }
-
-         //debuggin'
-         // console.log("my state fills:")
-         // console.log($scope.stateFills)
-
 
          stateJSON = returnStateJSON()
          for (var key in $scope.stateFills){
@@ -114,7 +105,8 @@ angular.module('app').controller('HomeController', [
         $scope.map.updateChoropleth(stateJSON);
 
        });
-     }
+         $scope.sent = tweets.data;
+     };
 
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
@@ -126,8 +118,6 @@ angular.module('app').controller('HomeController', [
         }
       });
     }
-
-
-}
+  }
 
 ]);
