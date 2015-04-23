@@ -1,8 +1,9 @@
 angular.module('app').controller('HomeController', [
   '$scope',
   '$http',
+  '$interval',
 
-  function($scope,$http){
+  function($scope,$http, $interval){
 
   $http({
     method: 'GET',
@@ -19,6 +20,16 @@ angular.module('app').controller('HomeController', [
     $scope.sent = null;
   };
 
+  $interval(function(){
+    $http({
+      method: 'GET',
+      url: '/count'
+    }).then(function(count){
+      count = JSON.stringify(count);
+      count = JSON.parse(count)
+      $scope.count = count.data;
+    });
+  },1000);
 
   $scope.map = new Datamap({
     element: document.getElementById('container'),

@@ -8,6 +8,11 @@ module.exports = function(app){
     res.render('index');
   });
 
+  app.get('/count', function(req,res){
+    Tweet.count({}, function(err,count){
+      res.send(String(count));
+    });
+  });
 
 
   app.get('/tweet_filter', function(req,res){
