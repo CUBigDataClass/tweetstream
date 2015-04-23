@@ -40,16 +40,14 @@ table tr:nth-child(even) {
 </head>
 <body>
 <div class="form-group">
-  <form ng-submit="query()">
+  <form ng-submit="query()" name="queryForm">
     <label for="from">Search:</label>
     <input type="text" ng-model="word" id="word">
-    <label for="start">Start Date:</label>
-    <input id="start" ng-model="startDate" value={{(startDate|date)||""}}>
-    <label for="end">End Date:</label>
-    <input id="end" ng-model="endDate" value={{(endDate|date)||""}}>
+    <input type="hidden" id="start" ng-model="startDate" value={{(startDate|date)||""}}>
+    <input type="hidden" id="end" ng-model="endDate" value={{(endDate|date)||""}}>
     <span class="dropdown">
       <a class="dropdown-toggle btn btn-danger">
-        {{(startDate|date)||"pick start"}} - {{(endDate|date)||"pick end"}}
+        {{(startDate|date)||"Select Start"}} - {{(endDate|date)||"Select End"}}
       </a>
 
       <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
@@ -57,6 +55,7 @@ table tr:nth-child(even) {
       </div>
     </span>
     <input type="submit" id="submit" value="Submit" />
+    <button type="button" ng-click="resetForm()">Reset</button>
   </form>
 </div>
 {{getBubbles(map,sent)}}

@@ -4,10 +4,14 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http){
 
-
+  $scope.resetForm = function()
+  {
+    $scope.word = '';
+    $scope.startDate = '';
+    $scope.endDate = '';
+  };
 
   $scope.map = new Datamap({
-
     element: document.getElementById('container'),
     scope: 'usa',
       geographyConfig: {
@@ -62,7 +66,6 @@ angular.module('app').controller('HomeController', [
 
     $scope.word = '';
     $scope.query = function () {
-      console.log(($scope.startDate))
      $http({
          method: 'GET',
          url: '/tweet_filter',
