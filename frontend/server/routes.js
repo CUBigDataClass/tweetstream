@@ -43,7 +43,7 @@ module.exports = function(app){
 // Gets Tweets from a certain state
 // ***
   app.get('/tweets/:state', function(req,res){
-  	var q = Tweet.find({state:req.params.state}).limit(2000);
+  	var q = Tweet.find({state:req.params.state}).sort({created_at: -1}).limit(2000);
   	q.exec(function(err, tweets){
   		if (err) throw err
   		res.status(200).send(tweets);

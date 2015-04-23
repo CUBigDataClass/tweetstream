@@ -5,12 +5,16 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http, $interval){
 
-  $http({
-    method: 'GET',
-    url: '/getlatest'
-  }).then(function(tweets){
-    $scope.latest = tweets;
-  });
+    $scope.sent = [];
+
+  $interval(function(){
+    $http({
+      method: 'GET',
+      url: '/getlatest'
+    }).then(function(tweets){
+      $scope.latest = tweets.data;
+    });
+  },4000);
 
   $scope.resetForm = function()
   {
@@ -18,6 +22,8 @@ angular.module('app').controller('HomeController', [
     $scope.startDate = '';
     $scope.endDate = '';
     $scope.sent = null;
+    var stateJSON = returnStateJSON();
+    $scope.map.updateChoropleth(stateJSON);
   };
 
   $interval(function(){
