@@ -9,6 +9,7 @@ angular.module('app').controller('HomeController', [
     $scope.word = '';
     $scope.startDate = '';
     $scope.endDate = '';
+    $scope.sent = null;
   };
 
   $scope.map = new Datamap({
@@ -39,6 +40,8 @@ angular.module('app').controller('HomeController', [
             url: '/tweets/'+state
            }).then(function(tweets){
             $scope.sent = tweets.data;
+
+            $scope.totalItems = $scope.sent.length;
             var totalSent = 0;
             for(var index in tweets.data){
               tweetSent = tweets.data[index].sentiment
@@ -72,6 +75,7 @@ angular.module('app').controller('HomeController', [
          params: {word:$scope.word, startDate:String($scope.startDate), endDate:String($scope.endDate)}
       }).then(function(tweets){
          $scope.sent = tweets.data;
+         $scope.totalItems = $scope.sent.length;
      });
     }
 
@@ -86,6 +90,16 @@ angular.module('app').controller('HomeController', [
       });
     }
 
+  $scope.currentPage = 1;
+  $scope.numPerPage = 10;
+
+   $scope.paginate = function(value) {
+    var begin, end, index;
+    begin = ($scope.currentPage - 1) * $scope.numPerPage;
+    end = begin + $scope.numPerPage;
+    index = $scope.sent.indexOf(value);
+    return (begin <= index && index < end);
+  };
 
 }
 
