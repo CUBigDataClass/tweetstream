@@ -11,9 +11,7 @@ module.exports = function(app){
 
 
   app.get('/tweet_filter', function(req,res){
-    // console.log(req.query.word)
     if(req.query.word && !req.query.startDate && !req.query.endDate){
-      console.log("word only")
       Tweet.find({text: { "$regex": req.query.word, "$options": "i" }}).find(function(err,tweet){
         
         if(err) throw err;
@@ -21,14 +19,12 @@ module.exports = function(app){
       });
     }
     else if(req.query.startDate && req.query.endDate && !req.query.word){
-      console.log("date only")
       Tweet.find({"created_at": {"$gte": new Date(req.query.startDate), "$lt": new Date(req.query.endDate)}}, function(err,tweet){
         console.log(tweet)
         res.status(200).send(tweet);
       });
     }
     else if(req.query.startDate && req.query.endDate && req.query.word){
-      console.log("word and date")
        Tweet.find({text: { "$regex": req.query.word, "$options": "i" }, "created_at": {"$gte": new Date(req.query.startDate), "$lt": new Date(req.query.endDate)}}, function(err,tweet){
         res.status(200).send(tweet);
        });
