@@ -1,6 +1,6 @@
 var db        = require('./mongo.js');
 var Tweet = db.tweetInit('processed_data');
-
+// var moment = require('moment');
 
 module.exports = function(app){
 	
@@ -9,29 +9,28 @@ module.exports = function(app){
   });
 
 
-// ***
-// Outputs everything in the database
-// ***
-  app.get('/tweets', function(req,res){
-    Tweet.find(function(err,doc){
-      if(err) res.send(err);
-      res.status(200).send(doc);
-    });
-  });
 
-  app.get('/tweets_search/:word', function(req,res){
-    if(req.params.word){
-      Tweet.find({text: { "$regex": req.params.word, "$options": "i" }}).find(function(err,doc){
+  app.get('/tweet_filter', function(req,res){
+    if(req.query.word && !req.query.startDate && !req.query.endDate){
+      Tweet.find({text: { "$regex": req.query.word, "$options": "i" }}).find(function(err,tweet){
         if(err) throw err;
-        res.status(200).send(doc);
-        console.log(doc);
+        res.status(200).send(tweet);
       });
-    }else{
-      Tweet.find(function(err,doc){
+    }
+    else if(req.query.startDate && req.query.endDate && !req.query.word){
+      Tweet.find({"created_at": {"$gte": new Date(req.query.startDate), "$lt": new Date(req.query.endDate)}}, function(err,tweet){
         if(err) throw err;
-        res.status(200).send(doc);
-        console.log(doc);
+        res.status(200).send(tweet);
       });
+    }
+    else if(req.query.startDate && req.query.endDate && req.query.word){
+       Tweet.find({text: { "$regex": req.query.word, "$options": "i" }, "created_at": {"$gte": new Date(req.query.startDate), "$lt": new Date(req.query.endDate)}}, function(err,tweet){
+        if(err) throw err;
+        res.status(200).send(tweet);
+       });
+    }
+    else{
+      res.status(404).send("Not found, try entering a query string");
     }
   });
 

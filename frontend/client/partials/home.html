@@ -20,50 +20,70 @@
 <script src="../vendor/datamaps.all.min.js"></script>
 
 
-<style>
-
-table, th , td  {
-    border: 1px solid grey;
-    border-collapse: collapse;
-    padding: 10px;
-  }
-  table tr:nth-child(odd) {
-    background-color: #ADD8E6;
-  }
-  table tr:nth-child(even) {
-    background-color: #ffffff;
-  }
-}
-</style>
-
 </head>
 <body>
-<div>
- Your word:
-  <form ng:submit="query()">
-    <input type="text" ng-model="word">
-  </form>
+</br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-7">
+      <form ng-submit="query()" name="queryForm">
+        <label for="from">Search:</label>
+        <input type="text" ng-model="word" id="word">
+        <input type="hidden" id="start" ng-model="startDate" value={{(startDate|date)||""}}>
+        <input type="hidden" id="end" ng-model="endDate" value={{(endDate|date)||""}}>
+        <span class="dropdown">
+          <a class="dropdown-toggle btn btn-danger">
+            {{(startDate|date)||"Select Start"}} - {{(endDate|date)||"Select End"}}
+          </a>
 
- </div>
-{{getBubbles(map,sent)}}
-<div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
+          <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
+            <div date-range start="startDate" end="endDate"></div>
+          </div>
+        </span>
+        <input type="submit" id="submit" value="Submit" />
+        <button type="button" ng-click="resetForm()">Reset</button>
+      </form>
+      <div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
+    </div>
+    <div type="hidden">{{getBubbles(map,sent)}}</div>
+    
 
-
-
-<div id="sidebar" class="sidebar"> 
-<sidebar>
-<table>
-  <tr ng-repeat="x in sent | limitTo: 100" ng-style="border: 1px solid grey; border-collapse: collapse; padding: 10px;">
-    <td>{{ x.text }}</td>
-    <td>{{ x.state }}</td>
-    <td>{{ x.city }}</td>
-  </tr>
-</table>
-
-
-
-
-</sidebar>
+    <div class="col-md-5">
+    <div ng-hide="sent == null">
+      <table class="table table-striped ">
+          <th>Tweet</th>
+          <th>State</th>
+          <th>City</th>
+          <th></th>
+        <tbody ng-repeat="x in sent | filter : paginate">
+        <tr ng-if="x.sentiment > 0" class="info">
+          <td>{{ x.text }}</td>
+          <td>{{ x.state }}</td>
+          <td>{{ x.city }}</td>
+          <td>{{ x.sentiment }}</td>
+        </tr>
+         <tr ng-if="x.sentiment < 0" class="danger">
+          <td>{{ x.text }}</td>
+          <td>{{ x.state }}</td>
+          <td>{{ x.city }}</td>
+          <td>{{ x.sentiment }}</td>
+        </tr>
+        <tr ng-if="x.sentiment == 0" class="warning">
+          <td>{{ x.text }}</td>
+          <td>{{ x.state }}</td>
+          <td>{{ x.city }}</td>
+          <td>{{ x.sentiment }}</td>
+        </tr>
+        </tbody>
+      </table>
+       <pagination total-items="totalItems" ng-model="currentPage"
+              max-size="5" boundary-links="true"
+              items-per-page="numPerPage" class="pagination-sm">
+      </pagination>
+      <div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

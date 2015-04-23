@@ -11,8 +11,16 @@ angular.module('app').controller('HomeController', [
     $scope.latest = tweets;
   });
 
-  $scope.map = new Datamap({
+  $scope.resetForm = function()
+  {
+    $scope.word = '';
+    $scope.startDate = '';
+    $scope.endDate = '';
+    $scope.sent = null;
+  };
 
+
+  $scope.map = new Datamap({
     element: document.getElementById('container'),
     scope: 'usa',
       geographyConfig: {
@@ -39,8 +47,9 @@ angular.module('app').controller('HomeController', [
             method: 'GET',
             url: '/tweets/'+state
            }).then(function(tweets){
-            console.log(typeof(tweets.data))
             $scope.sent = tweets.data;
+
+            $scope.totalItems = $scope.sent.length;
             var totalSent = 0;
             for(var index in tweets.data){
               tweetSent = tweets.data[index].sentiment
@@ -70,8 +79,9 @@ angular.module('app').controller('HomeController', [
     $scope.query = function () {
      $http({
          method: 'GET',
-         url: '/tweets_search'+'/'+$scope.word,
-      }).then(function(tweets){
+         url: '/tweet_filter',
+         params: {word:$scope.word, startDate:String($scope.startDate), endDate:String($scope.endDate)}
+        }).then(function(tweets){
 
          $scope.sent = tweets.data;
          $scope.stateFills = {}
@@ -106,7 +116,10 @@ angular.module('app').controller('HomeController', [
 
        });
          $scope.sent = tweets.data;
+          $scope.totalItems = $scope.sent.length;
      };
+        
+     
 
   $scope.getBubbles = function(map,sent){
         map.bubbles(sent, {
@@ -118,6 +131,18 @@ angular.module('app').controller('HomeController', [
         }
       });
     }
-  }
+
+  $scope.currentPage = 1;
+  $scope.numPerPage = 10;
+
+   $scope.paginate = function(value) {
+    var begin, end, index;
+    begin = ($scope.currentPage - 1) * $scope.numPerPage;
+    end = begin + $scope.numPerPage;
+    index = $scope.sent.indexOf(value);
+    return (begin <= index && index < end);
+  };
+
+}
 
 ]);
