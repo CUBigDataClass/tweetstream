@@ -1,7 +1,7 @@
 var Twit       = require('twit'), // wrapper on top of twitter api
   dotenv       = require('dotenv'), // used for keys -> get from .env
-  getSentiment = require("../sentiment"),
-  getState     = require("../statefinder.js");
+  getSentiment = require("../helper/sentiment"),
+  getState     = require("../helper/statefinder.js");
   kafka        = require('kafka-node'),
   Producer     = kafka.Producer,
   KeyedMessage = kafka.KeyedMessage,

@@ -3,12 +3,12 @@
 var kafka = require('kafka-node');
 var Consumer = kafka.Consumer;
 var Offset = kafka.Offset;
-var getSentiment = require("../sentiment");
-var getState     = require("../statefinder.js");
+var getSentiment = require("../helper/sentiment");
+var getState     = require("../helper/statefinder.js");
 var Client = kafka.Client;
 var argv = require('optimist').argv;
 var topic = argv.topic || 'tweets';
-var db = require('../tweet_collector/mongo.js').tweetInit('tweets_raw');
+var db = require('../helper/mongo.js').tweetInit('tweets_raw');
 
 var client = new Client('localhost:2181');
 var topics = [
