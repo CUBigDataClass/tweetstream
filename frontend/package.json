@@ -21,6 +21,7 @@
     "mongoose": "^3.8.23",
     "morgan": "~1.5.1",
     "serve-static": "~1.4.2",
-    "twit": "1.1.14"
+    "twit": "1.1.14",
+    "elasticsearch": "4.0.2"
   }
 }

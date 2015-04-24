@@ -1,8 +1,30 @@
 var db        = require('./mongo.js');
 var Tweet = db.tweetInit('processed_data');
-// var moment = require('moment');
+var elasticsearch = require('elasticsearch');
 
 module.exports = function(app){
+
+
+// ***
+// Initialize elasticsearch client
+// ***
+var client = new elasticsearch.Client({
+  host: 'localhost:9200',
+  log: 'trace'
+});
+
+
+app.post('/search',function(req,res){
+    client.search({
+    q: req.query.word,
+    size: 5000
+  }).then(function (body) {
+    var hits = body.hits.hits;
+    res.send(hits);
+  }, function (error) {
+    console.trace(error.message);
+  });
+});
 
 // ***
 // Main view
