@@ -3,18 +3,27 @@ var Tweet = db.tweetInit('processed_data');
 // var moment = require('moment');
 
 module.exports = function(app){
-	
+
+// ***
+// Main view
+// ***
   app.get('/', function(req, res) {
     res.render('index');
   });
-
+  
+  
+// ***
+// Gets Count of all tweets real time
+// ***
   app.get('/count', function(req,res){
     Tweet.count({}, function(err,count){
       res.send(String(count));
     });
   });
 
-
+// ***
+// Gets Tweets based on certain date and keyword queries
+// ***
   app.get('/tweet_filter', function(req,res){
     if(req.query.word && !req.query.startDate && !req.query.endDate){
       Tweet.find({text: { "$regex": req.query.word, "$options": "i" }}).find(function(err,tweet){
