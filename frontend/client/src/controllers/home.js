@@ -5,16 +5,40 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http, $interval){
 
+
+
     $scope.sent = [];
+    $scope.oldTweets = [];
 
   $interval(function(){
     $http({
       method: 'GET',
       url: '/getlatest'
     }).then(function(tweets){
-      $scope.latest = tweets.data;
+
+      var old = $scope.oldTweets.filter(function(current){
+          return tweets.data.filter(function(current_b){
+              return current_b.value == current.value && current_b.display == current.display
+          }).length == 0
+      });
+
+      var newTweets = tweets.data.filter(function(current){
+          return $scope.oldTweets.filter(function(current_a){
+              return current_a.value == current.value && current_a.display == current.display
+          }).length == 0
+      });
+
+      var toAdd = old.concat(newTweets);
+      // console.log(toAdd);
+      for(data in toAdd){
+          $scope.oldTweets.push(toAdd[data]);
+      }
+      // $scope.oldTweets.concat(toAdd);
+      console.log($scope.oldTweets);
+
+
     });
-  },4000);
+  },1000);
 
   $scope.resetForm = function()
   {
@@ -138,8 +162,8 @@ angular.module('app').controller('HomeController', [
         
      
 
-  $scope.getBubbles = function(map,sent){
-        map.bubbles(sent, {
+  $scope.getBubbles = function(map,tweets){
+        map.bubbles(tweets, {
         popupTemplate: function (geo, data) { 
           return ['<div class="hoverinfo">' +  data.text,
           '<br/>created_at: ' +  data.created_at,
