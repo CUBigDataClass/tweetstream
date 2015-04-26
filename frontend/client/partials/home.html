@@ -1,125 +1,295 @@
-<!-- <script src="../vendor/d3.min.js"></script>
-<script src="../vendor/topojson.js"></script>
-<script src="../vendor/datamaps.all.min.js"></script>
-<script src="../vendor/angular-datamaps.min.js"></script>
-<datamap
-  options="map.options"
-  data="map.data"
-  colors="map.colors"
-  type="{{ map.type }}"
-  on-click="updateActiveGeography"
-  >
-</datamap> -->
-
-
 <!DOCTYPE html>
-<html>
-<head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-<script src="../vendor/datamaps.all.min.js"></script>
+<html lang="en">
 
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <!-- node animation -->
+    <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript" />
+	<meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
+	<meta name="author" content="Codrops" />
+
+    <title>Hack Attack | Sentiment Analysis</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/grayscale.css" rel="stylesheet">
+    
+    <!-- About Us CSS -->
+    <link href="about-us/css/team.css" rel="stylesheet">
+    <link href="css/round-about.css" rel="stylesheet">
+    
+    <!-- node animation -->
+    <link rel="stylesheet" type="text/css" href="css/nodes/component.css" />
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
 </head>
-<body>
-</br>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-7">
-      <form ng-submit="query()" name="queryForm">
-        <label for="from">Search:</label>
-        <input type="text" ng-model="word" id="word">
-        <input type="hidden" id="start" ng-model="startDate" value={{(startDate|date)||""}}>
-        <input type="hidden" id="end" ng-model="endDate" value={{(endDate|date)||""}}>
-        <span class="dropdown">
-          <a class="dropdown-toggle btn btn-danger">
-            {{(startDate|date)||"Select Start"}} - {{(endDate|date)||"Select End"}}
-          </a>
 
-          <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
-            <div date-range start="startDate" end="endDate"></div>
-          </div>
-        </span>
-        <input type="submit" id="submit" value="Submit" />
-        <button type="button" ng-click="resetForm()">Reset</button>
-      </form>
-      <div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
-    </div>
-    <div type="hidden" ng-if="sent[0] !== undefined">{{getBubbles(map,sent)}}</div>
-    <div type="hidden" ng-if="sent[0] == undefined">{{getBubbles(map,latest)}}</div>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
-    
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">
+                    <!-- <pseudo:before><img src="img/coders.png"></pseudo:before> -->  <span class="light">Hack Attack</span>
+                </a>
+            </div>
 
-    <div class="col-md-5">
-    <div ng-hide="sent[0] == undefined">
-      <table class="table table-striped ">
-          <th>Tweet</th>
-          <th>State</th>
-          <th>City</th>
-          <th></th>
-        <tbody ng-repeat="x in sent | filter : paginate">
-        <tr ng-if="x.sentiment > 0" class="info">
-          <td>{{ x.text }}</td>
-          <td>{{ x.state }}</td>
-          <td>{{ x.city }}</td>
-          <td>{{ x.sentiment }}</td>
-        </tr>
-         <tr ng-if="x.sentiment < 0" class="danger">
-          <td>{{ x.text }}</td>
-          <td>{{ x.state }}</td>
-          <td>{{ x.city }}</td>
-          <td>{{ x.sentiment }}</td>
-        </tr>
-        <tr ng-if="x.sentiment == 0" class="warning">
-          <td>{{ x.text }}</td>
-          <td>{{ x.state }}</td>
-          <td>{{ x.city }}</td>
-          <td>{{ x.sentiment }}</td>
-        </tr>
-        </tbody>
-      </table>
-       <pagination total-items="totalItems" ng-model="currentPage"
-              max-size="5" boundary-links="true"
-              items-per-page="numPerPage" class="pagination-sm">
-      </pagination>
-      </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about">About the Project</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#download">Sentiment Analysis</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#team">Team</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
 
-      <div ng-show="sent[0] == undefined">
-      <table class="table table-striped ">
-          <th>Tweet</th>
-          <th>State</th>
-          <th>City</th>
-          <th></th>
-        <tbody ng-repeat="x in latest">
-        <tr ng-if="x.sentiment > 0" class="info">
-          <td>{{ x.text }}</td>
-          <td>{{ x.state }}</td>
-          <td>{{ x.city }}</td>
-          <td>{{ x.sentiment }}</td>
-        </tr>
-         <tr ng-if="x.sentiment < 0" class="danger">
-          <td>{{ x.text }}</td>
-          <td>{{ x.state }}</td>
-          <td>{{ x.city }}</td>
-          <td>{{ x.sentiment }}</td>
-        </tr>
-        <tr ng-if="x.sentiment == 0" class="warning">
-          <td>{{ x.text }}</td>
-          <td>{{ x.state }}</td>
-          <td>{{ x.city }}</td>
-          <td>{{ x.sentiment }}</td>
-        </tr>
-        </tbody>
-      </table>
-  </div>
-  </div>
-</div>
+    <!-- Intro Header -->
+    <header class="intro">
+        <div class="intro-body">
+            <div class="container">
+                <div class="row">
+                <div id="large-header" class="large-header" style="height: 778px;">
+					<canvas id="demo-canvas" width="1440" height="778">
+					<!--
+<div class="col-md-8 col-md-offset-2">
+                        <h1 class="brand-heading">Sentiment Analysis</h1>
+                        <p class="intro-text">Ut aliquet felis et nunc pretium, at gravida tellus molestie.</p>
+                        <a href="#about" class="btn btn-circle page-scroll">
+                            <i class="fa fa-angle-double-down animated"></i>
+                        </a>
+                    </div>
+--></canvas>
+					<h1 class="main-title" id="main-title">Sentiment Analysis</h1>
+					<h2 id="big-data">A Project on Big Data</h2></span>
+				</div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<div class="row">
-  <div class="col-md-7">
-    <p class="text-center">Total Tweets:{{count}}</p>
-  </div>
-</div>
+    <!-- About Section -->
+    <section id="about" class="container content-section text-center">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2">
+            <img src="img/twitter.png" alt="twitter icon" id="twitter"><br>
+            <img src="img/emojis.png" alt="emojis">
+                <h2 id="twitter">What are people saying on Twitter, and how do they feel?</h2><br>
+                <p>The sentiment analysis presented below was done for our Big Data course at the University of Colorado. Using a handful of concepts taught to us throughout our academic careers and specifically within our Big Data course, we designed a graphical user interface that collects and analyzes tweet words and emojis. The analysis gauges the sentiment surrounding specific words occurring in many tweets across the United States. We streamed our tweets from the Twitter API and used Google's Geolocation to determine the location of the tweets. Spend some time messing around with it yourself and feel free to leave us a comment with feedback below!</p>
+            </div>
+        </div>
+    </section>
 
+    <!-- Download Section -->
+    <section id="download" class="content-section text-center">
+        <div class="download-section">
+              <div class="row">
+                <div class="col-lg-7">
+                  <form ng-submit="query()" name="queryForm">
+                    <label for="from">Search:</label>
+                    <input type="text" ng-model="word" id="word">
+                    <input type="hidden" id="start" ng-model="startDate" value={{(startDate|date)||""}}>
+                    <input type="hidden" id="end" ng-model="endDate" value={{(endDate|date)||""}}>
+                    <span class="dropdown">
+                      <a class="dropdown-toggle btn btn-danger">
+                        {{(startDate|date)||"Select Start"}} - {{(endDate|date)||"Select End"}}
+                      </a>
+                      <div class="dropdown-menu" ng-click="$event.preventDefault();$event.stopPropagation()">
+                        <div date-range start="startDate" end="endDate"></div>
+                      </div>
+                    </span>
+                    <input type="submit" id="submit" value="Submit" />
+                    <button type="button" ng-click="resetForm()">Reset</button>
+                  </form>
+                  <div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
+                </div>
+                <div type="hidden" ng-if="sent[0] !== undefined">{{getBubbles(map,sent)}}</div>
+                <div type="hidden" ng-if="sent[0] == undefined">{{getBubbles(map,latest)}}</div>
+                <div class="col-lg-5" style="padding-left:50px; padding-right:50px;">
+                <div ng-hide="sent[0] == undefined">
+                  <table class="table table-striped ">
+                      <th>Tweet</th>
+                      <th>State</th>
+                      <th>City</th>
+                      <th></th>
+                    <tbody ng-repeat="x in sent | filter : paginate">
+                    <tr ng-if="x.sentiment > 0" class="info">
+                      <td>{{ x.text }}</td>
+                      <td>{{ x.state }}</td>
+                      <td>{{ x.city }}</td>
+                      <td>{{ x.sentiment }}</td>
+                    </tr>
+                     <tr ng-if="x.sentiment < 0" class="danger">
+                      <td>{{ x.text }}</td>
+                      <td>{{ x.state }}</td>
+                      <td>{{ x.city }}</td>
+                      <td>{{ x.sentiment }}</td>
+                    </tr>
+                    <tr ng-if="x.sentiment == 0" class="warning">
+                      <td>{{ x.text }}</td>
+                      <td>{{ x.state }}</td>
+                      <td>{{ x.city }}</td>
+                      <td>{{ x.sentiment }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                   <pagination total-items="totalItems" ng-model="currentPage"
+                          max-size="5" boundary-links="true"
+                          items-per-page="numPerPage" class="pagination-sm">
+                  </pagination>
+                  </div>
+
+                  <div ng-show="sent[0] == undefined">
+                  <table class="table table-striped ">
+                      <th>Tweet</th>
+                      <th>State</th>
+                      <th>City</th>
+                      <th></th>
+                    <tbody ng-repeat="x in latest">
+                    <tr ng-if="x.sentiment > 0" class="info">
+                      <td>{{ x.text }}</td>
+                      <td>{{ x.state }}</td>
+                      <td>{{ x.city }}</td>
+                      <td>{{ x.sentiment }}</td>
+                    </tr>
+                     <tr ng-if="x.sentiment < 0" class="danger">
+                      <td>{{ x.text }}</td>
+                      <td>{{ x.state }}</td>
+                      <td>{{ x.city }}</td>
+                      <td>{{ x.sentiment }}</td>
+                    </tr>
+                    <tr ng-if="x.sentiment == 0" class="warning">
+                      <td>{{ x.text }}</td>
+                      <td>{{ x.state }}</td>
+                      <td>{{ x.city }}</td>
+                      <td>{{ x.sentiment }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-7">
+                <p class="text-center">Total Tweets:{{count}}</p>
+              </div>
+            </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="container content-section text-center">
+            <!-- Page Content -->
+    <div class="container">
+
+        <!-- Introduction Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">The Team</h1>
+
+        <!-- Team Members Row -->
+        <div class="row">
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="img/josh.png" alt="">
+                <br><br>
+                <h3>Josh Fermin
+                    <small>Computer Science</small>
+                </h3>
+                <p>Josh is a junior. When coding he likes digging deep into the hardware of things.</p>
+            </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="img/andrew.jpg" alt="" width="184px">
+               <br><br>
+                <h3>Andrew Gordon
+                    <small>Computer Science</small>
+                </h3>
+                <p>Andrew is a junior. When he isn't coding you can find him jammin' out on his dobro.</p>
+            </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="img/simone.png" alt="" width="184px">
+                <br><br>
+                <h3>Simone Johnson
+                    <small>Marketing</small>
+                </h3>
+                <p>Simone is a senior. Her love for creativity catapulted her into web and graphic design.</p>
+            </div>
+            <div class="col-lg-4 col-sm-6 text-center">
+                <img class="img-circle img-responsive img-center" src="img/alex.jpg" alt="" width="184px">
+                <br><br>
+                <h3>Alex Campbell
+                    <small>Computer Science</small>
+                </h3>
+                <p>Alex is a junior. He's a JavaScript guru and lover of the startup scene.</p>
+            </div>
+        </div>
+
+        <hr>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy; Hack Attack. All Rights Reserved 2015.</p>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+
+    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
+
+	<!-- node animation -->
+	<script src="js/nodes/TweenLite.min.js"></script>
+	<script src="js/nodes/EasePack.min.js"></script>
+	<script src="js/nodes/rAF.js"></script>
+	<script src="js/nodes/demo-1.js"></script>
 </body>
+
 </html>
