@@ -18,7 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script src="../vendor/datamaps.all.min.js"></script>
-
+<script src="../../node_modules/elasticsearch/src/elasticsearch.angular.js"></script>
+<script src="../../node-modules/angular/angular.js"></script>
 
 </head>
 <body>
@@ -121,5 +122,43 @@
   </div>
 </div>
 
+<!-- <div ng-app="app" ng-controller="homeCtrl">
+ -->
+
+
+<div>
+
+  <!-- The search box puts the term into $scope.searchTerm
+       and calls $scope.search() on submit -->
+  <section class="searchField">
+    <form ng-submit="search()">
+      <input type="text" ng-model="searchTerm">
+      <input type="submit" value="Search tweets">
+    </form>
+  </section>
+ 
+  <!-- In results, we show a message if there are no results, and
+       a list of results otherwise. -->
+  <section class="results">
+    <div class="no-tweets" ng-hide="tweets.length">No results</div>
+
+    <!-- We show one of these elements for each recipe in $scope.tweets.
+         The ng-cloak directive prevents our templates from showing on load. -->
+    <article class="tweet" ng-repeat="tweet in tweets" ng-cloak>
+      <h2>
+        <a ng-href="{{tweet.url}}">{{tweet.name}}</a>
+      </h2>
+
+ 
+    </article>
+ 
+    <!-- We put a link that calls $scope.loadMore to load more tweets
+         and append them to the results.-->
+    <div class="load-more" ng-hide="allResults" ng-cloak>
+      <a ng-click="loadMore()">More...</a>
+    </div>
+  </section>
+
+</div>
 </body>
 </html>

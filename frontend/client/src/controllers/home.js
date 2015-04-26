@@ -1,10 +1,11 @@
 angular.module('app').controller('HomeController', [
+  // 'searchService',
   '$scope',
   '$http',
   '$interval',
+  '$location',
 
-  function($scope,$http, $interval){
-
+function( $scope,$http, $interval, $location){
     $scope.sent = [];
 
   $interval(function(){
@@ -159,6 +160,46 @@ angular.module('app').controller('HomeController', [
     index = $scope.sent.indexOf(value);
     return (begin <= index && index < end);
   };
+
+
+
+
+
+
+   
+  //test elastic search scope parameters
+  $scope.searched_tweets = [];       
+  $scope.page = 0;          
+  $scope.allResults = false;  
+  //$scope.searchTerm = $location.search().q || initChoices;
+  //$scope.searchTerm = initChoices;
+  //2$scope.searchTerm = $location.search().q;
+
+  $scope.search = function() {
+    $scope.page = 0;
+    $scope.tweets = [];
+    $scope.allResults = false;
+    $location.search({'q': $scope.searchTerm});
+    $scope.loadMore();
+  }
+
+  $scope.loadMore = function() {
+    tweets.elasticSearchTweets($scope.searchTerm, $scope.page++).then(function(results) {
+      if (results.length !== 10) {
+        $scope.allResults = true;
+      }
+ 
+      var ii = 0;
+ 
+      for (; ii < results.length; ii++) {
+        $scope.tweets.push(results[ii]);
+      }
+    });
+  };
+
+  //$scope.loadMore();
+
+
 
 }
 
