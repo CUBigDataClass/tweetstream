@@ -63,7 +63,7 @@ module.exports = function(app){
 // Gets 10 latest tweets
 // ***
   app.get('/getlatest', function(req,res){
-  	Tweet.find({}).sort({created_at: -1}).limit(10).exec(function(err,tweet){
+  	Tweet.find({}).sort({created_at: -1}).limit(3).exec(function(err,tweet){
 	  res.status(200).send(tweet)
 	})
   })

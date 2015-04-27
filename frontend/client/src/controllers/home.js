@@ -5,16 +5,40 @@ angular.module('app').controller('HomeController', [
 
   function($scope,$http, $interval){
 
-    $scope.sent = [];
+  $scope.sent = [];
+
+
+  $scope.oldString = [];
 
   $interval(function(){
     $http({
       method: 'GET',
       url: '/getlatest'
-    }).then(function(tweets){
-      $scope.latest = tweets.data;
-    });
-  },4000);
+    }).then(function(newTweets){
+          var newString = [];
+          newTweets.data.forEach(function(tweet){
+            tweet = JSON.stringify(tweet);
+            newString.push(tweet);
+          });
+
+            if($scope.oldString[0] == null){
+              $scope.oldString.forEach(function(tweet){
+                  tweet = JSON.stringify(tweet);
+                  $scope.oldString.push(tweet); 
+              });
+            }
+          var toAdd = newString.filter(function(obj){
+            return $scope.oldString.indexOf(obj) == -1;
+          });
+
+          if(toAdd[0] !== null){
+            toAdd.forEach(function(item){
+              $scope.oldString.push(item);
+            });
+          }
+          console.log("OLD STRING IS:\n"+ $scope.oldString);
+      });
+  },1000);
 
   $scope.resetForm = function()
   {

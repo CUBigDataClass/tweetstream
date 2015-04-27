@@ -127,8 +127,8 @@
                   </form>
                   <div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
                 </div>
-                <div type="hidden" ng-if="sent[0] !== undefined">{{getBubbles(map,sent)}}</div>
-                <div type="hidden" ng-if="sent[0] == undefined">{{getBubbles(map,latest)}}</div>
+                <!-- <div type="hidden" ng-if="sent[0] !== undefined">{{getBubbles(map,sent)}}</div> -->
+                <!-- <div type="hidden" ng-if="sent[0] == undefined">{{getBubbles(map,latest)}}</div> -->
                 <div class="col-lg-5" style="padding-left:50px; padding-right:50px;">
                 <div ng-hide="sent[0] == undefined">
                   <table class="table table-striped ">
@@ -196,6 +196,7 @@
             <div class="row">
               <div class="col-md-7">
                 <p class="text-center">Total Tweets:{{count}}</p>
+                <p ng-repeat="x in oldString">{{x}}</p>
               </div>
             </div>
     </section>
