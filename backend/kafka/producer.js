@@ -1,17 +1,22 @@
 var Twit       = require('twit'), // wrapper on top of twitter api
   dotenv       = require('dotenv'), // used for keys -> get from .env
   getSentiment = require("../helper/sentiment"),
-  getState     = require("../helper/statefinder.js");
-  kafka        = require('kafka-node'),
-  Producer     = kafka.Producer,
-  KeyedMessage = kafka.KeyedMessage,
-  Client       = kafka.Client,
-  client       = new Client('localhost:2181'),
-  argv         = require('optimist').argv,
-  topic        = argv.topic || 'tweets',
-  p            = argv.p || 0,
-  a            = argv.a || 0,
-  producer     = new Producer(client, { requireAcks: 1 });
+  getState     = require("../helper/statefinder.js"),
+  AWS          = require('aws-sdk');
+  
+  AWS.config.loadFromPath('../config.json');
+  // kafka        = require('kafka-node'),
+  // Producer     = kafka.Producer,
+  // KeyedMessage = kafka.KeyedMessage,
+  // Client       = kafka.Client,
+  // client       = new Client('localhost:2181'),
+  // argv         = require('optimist').argv,
+  // topic        = argv.topic || 'tweets',
+  // p            = argv.p || 0,
+  // a            = argv.a || 0,
+  // producer     = new Producer(client, { requireAcks: 1 });
+
+
 
 dotenv.load();
 
@@ -24,31 +29,33 @@ dotenv.load();
 
 
 
-producer.on('ready', function () {
-    var stream = T.stream('statuses/sample');
-    var q = [];
 
-    stream.on('tweet', function(tweet){
-      if(tweet.geo != null && tweet.lang == "en" && tweet.place !== null){
-	if(tweet.place.country_code == "US"){
-          q.push(tweet);
-	}
+  var sqs    = new AWS.SQS();
+  var stream = T.stream('statuses/sample');
+  
+  stream.on('tweet', function(tweet){
+    if(tweet.geo != null && tweet.lang == "en" && tweet.place !== null){
+     if(tweet.place.country_code == "US"){
+       var tweetJson = JSON.stringify(tweet);
+       if(tweetJson !== undefined){
+         sqs.sendMessage(buildParams(tweetJson), function(err, data) {
+          if (err) console.log(err, err.stack); // an error occurred
+          else     console.log(data);           // successful response
+        });
       }
-        var ret = q.shift();
-        ret = JSON.stringify(ret);
-        var toSend = [{ topic: topic, partition: p, messages: ret, attributes: a }];
-        if(ret !== undefined){
-          producer.send(toSend, function (err, result) {
-                console.log(err || result);
-                console.log(ret);
-          });
-        }
+     }
+    }
     });
-  });
 
-
-
-
-producer.on('error', function (err) {
-    console.log('error', err)
-});
+function buildParams(tweet){
+  return {
+    MessageBody: tweet, /* required */
+    QueueUrl: 'https://sqs.us-west-2.amazonaws.com/680925280915/TweetQueue', /* required */
+    DelaySeconds: 0,
+    MessageAttributes: {
+      someKey: {
+        DataType: 'string' /* required */
+      },
+    }
+  }
+};

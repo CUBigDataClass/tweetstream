@@ -4,3 +4,4 @@ frontend/node_modules
 tweets.json
 *.pem
 frontend/.DS_Store
+**/config.json
