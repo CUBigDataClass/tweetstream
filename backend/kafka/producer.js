@@ -52,10 +52,11 @@ function buildParams(tweet){
     MessageBody: tweet, /* required */
     QueueUrl: 'https://sqs.us-west-2.amazonaws.com/680925280915/TweetQueue', /* required */
     DelaySeconds: 0,
-    MessageAttributes: {
-      someKey: {
-        DataType: 'string' /* required */
-      },
-    }
+    // MessageAttributes: {
+    //   someKey: {
+    //     DataType: 'String' /* required */
+    //     StringValue: 'tweet'
+    //   },
+    // }
   }
 };
