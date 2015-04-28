@@ -11,10 +11,30 @@ angular.module('app').controller('HomeController', [
     $http({
       method: 'GET',
       url: '/getlatest'
-    }).then(function(tweets){
-      $scope.latest = tweets.data;
-    });
-  },4000);
+    }).then(function(newTweets){
+          var newString = [];
+          newTweets.data.forEach(function(tweet){
+            tweet = angular.toJson(tweet);
+            newString.push(tweet);
+          });
+            var toCompare = [];
+
+              $scope.oldString.forEach(function(tweet){
+                  tweet = angular.toJson(tweet);
+                  toCompare.push(tweet); 
+              });
+          var toAdd = newString.filter(function(obj){
+            return toCompare.indexOf(obj) == -1;
+          });
+          if(toAdd[0] !== null){
+            toAdd.forEach(function(item){
+              $scope.oldString.push(JSON.parse(item));
+            });
+          }
+          $scope.latest = $scope.oldString;
+          $scope.totalItems = $scope.latest.length;
+      });
+  },1000);
 
   $scope.resetForm = function()
   {
@@ -156,9 +176,19 @@ angular.module('app').controller('HomeController', [
     var begin, end, index;
     begin = ($scope.currentPage - 1) * $scope.numPerPage;
     end = begin + $scope.numPerPage;
-    index = $scope.sent.indexOf(value);
+      index = $scope.latest.indexOf(value);
+      index = $scope.sent.indexOf(value);
     return (begin <= index && index < end);
   };
+  $scope.paginate2 = function(value) {
+    var begin, end, index;
+    begin = ($scope.currentPage - 1) * $scope.numPerPage;
+    end = begin + $scope.numPerPage;
+      index = $scope.latest.indexOf(value);
+    return (begin <= index && index < end);
+  };
+
+
 
 }
 

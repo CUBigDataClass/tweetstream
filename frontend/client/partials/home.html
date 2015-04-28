@@ -169,7 +169,7 @@
                       <th>State</th>
                       <th>City</th>
                       <th></th>
-                    <tbody ng-repeat="x in latest">
+                    <tbody ng-repeat="x in latest | filter : paginate2">
                     <tr ng-if="x.sentiment > 0" class="info">
                       <td>{{ x.text }}</td>
                       <td>{{ x.state }}</td>
@@ -190,6 +190,10 @@
                     </tr>
                     </tbody>
                   </table>
+                    <pagination total-items="totalItems" ng-model="currentPage"
+                        max-size="5" boundary-links="true"
+                        items-per-page="numPerPage" class="pagination-sm">
+                    </pagination>
               </div>
               </div>
             </div>
