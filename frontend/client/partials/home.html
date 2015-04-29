@@ -204,7 +204,8 @@
             <div class="row">
               <div class="col-md-7">
                 <p class="text-center">Total Tweets:{{count}}</p>
-                <p class="text-center">Current Count: {{stateCount}}</p>
+                <p ng-hide="sent[0] == undefined" class="text-center">Current Count: {{stateCount}}</p>
+                <p ng-hide="sent[0] !== undefined" class="text-center">Current Count: {{latestItems}}</p>
               </div>
             </div>
     </section>
