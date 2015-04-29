@@ -1,0 +1,14 @@
+  label {
+    display: block;
+  }
+  input, textarea {
+    margin-bottom: 8px; 
+    width: 320px; 
+    padding: 7px
+  }
+  .submit_btn {
+    width: 100px; 
+    background: #478fe7;
+    color: #ffffff; 
+    padding: 7px;
+  }
