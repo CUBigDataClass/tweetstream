@@ -162,7 +162,9 @@ angular.module('app').controller('HomeController', [
      
 
   $scope.getBubbles = function(map,sent){
-        map.bubbles(sent, {
+        if (sent.length > 100) {var arraySlice = sent.slice(1,100);}
+        else{ var arraySlice = sent}
+        map.bubbles(arraySlice, {
         popupTemplate: function (geo, data) { 
           return ['<div class="hoverinfo">' +  data.text,
           '<br/>created_at: ' +  data.created_at,
