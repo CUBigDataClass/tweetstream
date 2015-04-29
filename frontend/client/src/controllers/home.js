@@ -6,6 +6,7 @@ angular.module('app').controller('HomeController', [
   function($scope,$http, $interval){
 
     $scope.sent = [];
+    $scope.oldString = [];
 
   $interval(function(){
     $http({
@@ -19,10 +20,11 @@ angular.module('app').controller('HomeController', [
           });
             var toCompare = [];
 
-              $scope.oldString.forEach(function(tweet){
-                  tweet = angular.toJson(tweet);
-                  toCompare.push(tweet); 
-              });
+          $scope.oldString.forEach(function(tweet){
+              tweet = angular.toJson(tweet);
+              toCompare.push(tweet); 
+          });
+
           var toAdd = newString.filter(function(obj){
             return toCompare.indexOf(obj) == -1;
           });
@@ -32,6 +34,7 @@ angular.module('app').controller('HomeController', [
             });
           }
           $scope.latest = $scope.oldString;
+          console.log($scope.latest);
           $scope.totalItems = $scope.latest.length;
       });
   },1000);
@@ -176,7 +179,6 @@ angular.module('app').controller('HomeController', [
     var begin, end, index;
     begin = ($scope.currentPage - 1) * $scope.numPerPage;
     end = begin + $scope.numPerPage;
-      index = $scope.latest.indexOf(value);
       index = $scope.sent.indexOf(value);
     return (begin <= index && index < end);
   };
