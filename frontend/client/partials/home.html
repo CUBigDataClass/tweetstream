@@ -11,8 +11,8 @@
     
     <!-- node animation -->
     <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript" />
-	<meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
-	<meta name="author" content="Codrops" />
+  <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
+  <meta name="author" content="Codrops" />
 
     <title>Hack Attack | Sentiment Analysis</title>
 
@@ -90,10 +90,10 @@
     <!-- Intro Header -->
     <header class="intro">
             <div id="large-header" class="large-header" style="height: 778px;">
-    					<canvas id="demo-canvas" width="1440" height="778"></canvas>
-    					<h1 class="main-title" id="main-title">Sentiment Analysis</h1>
-    					<h2 id="big-data">A Project on Big Data</h2></span>
-				  </div>
+              <canvas id="demo-canvas" width="1440" height="778"></canvas>
+              <h1 class="main-title" id="main-title">Sentiment Analysis</h1>
+              <h2 id="big-data">A Project on Big Data</h2></span>
+          </div>
     </header>
 
     <!-- About Section -->
@@ -216,10 +216,55 @@
 
         <!-- Introduction Row -->
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12" style="padding-bottom:25px;">
                 <h2>Architecture Framework</h2>
                 <img src="img/architecture-framework.png" alt="Sentiment analysis architecture framework">
             </div>
+
+          <p  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Wow you actually care about our process, woohooo! Keep Reading! The challenge was simple: Real time sentiment analysis in addition to historical sentiment analysis based on key words.  Simple enough, right?!  Ehhh we found that when it comes to big data, we really need to think about what we’re doing... Click me to read more.
+          </p>
+          <div class="collapse" id="collapseExample">
+            <p class="text-left">
+              We started off with a model that goes as follows:  A tweet collector module reads from a stream, writes to a local JSON file, and then uploads to our mongolabs database everyday.  Oh how naïve we were.  We quickly moved to the stream writing directly to the database, hindsight is 20-20 I guess.  
+            </p>
+            <p class="text-left">
+              We have data!  Although we don’t need everything in the tweet, we only need a few attributes, and we need to add sentiment to it.  Map-Reduce to the rescue! Or not…  This was also stupid.  It forced us to run batch jobs every so often to update our live data set.  So we needed a way to make our application real-time, fast, and robust.
+            </p>
+            <p class="text-left">
+              Kafka to the rescue, for real this time.  This allowed us to cut out multiple reads and writes to the database.  As new tweets came in, our consumers would clean the data and persist both a raw copy and a clean copy.
+            </p>
+            <p class="text-left">
+              Okay, it looks like our backend data is working well!  Or not… We were using kafka correctly, but we were not able to utilize the power that comes with it: clustering, replication, and fault tolerance.  We were running the kafka instance on one node, with zero clustering.  
+            </p>
+            <p class="text-left">
+              Okay amazon SQS to the rescue FOR REAL this time.  This was perfect.  It would do the same thing as our kafka instance, but it would automatically cluster, replicate, and be fault tolerant.  We feel confident about this.
+            </p>
+            <p class="text-left">
+              Next was the front end.  We decided to create a node.js server in order to create a database API that our frontend angular application could interact with.  This was great at first, until we were requesting 100,000 tweets.  Everything broke.
+            </p>
+            <p class="text-left">
+              We decided that we would create API calls that would only load the tweets from the state that the user has clicked on.  In addition it will only load 2000 tweets at a time.  We used AJAX calls to achieve this.
+            </p>
+            <p class="text-left">
+              We have this real time data, but we’re not showing it on the frontend.  Nothing a little javascript magic can’t handle.
+            </p>
+            <p class="text-left">
+              So that’s where the app is at now.  Although we still have a lot we want to do.
+            </p>
+            <p class="text-left">
+              1)  Implement SOLR to improve search.
+            </p>
+            <p class="text-left">
+              2)  Make the front-end much prettier.
+            </p>
+            <p class="text-left">
+              3)  Get a better sentiment analysis.
+            </p>
+            <p data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Thanks for reading!
+            </p>
+          </div>
         </div>
         <hr>
     </div>
@@ -280,7 +325,7 @@
                     <a href="https://www.linkedin.com/profile/view?id=218588179&authType=NAME_SEARCH&authToken=5sVg&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2Cidx%3A1-1-1%2CtarId%3A1430082136111%2Ctas%3Aalex%20camp" target="_blank"><img src="img/linkedin-icon.png" alt="linkedin icon" width="33px"></a>
                     <a href="https://github.com/Zandrr" target="_blank"><img src="img/github-icon.png" alt="github icon" width="33px"></a>
                 </h3>
-                <p>Alex is a junior. He's a JavaScript guru and lover of the startup scene.</p>
+                <p>Alex is a junior. He's a JavaScript guru and lover of improv comedy, and the startup scene.</p>
             </div>
         </div>
         <hr>
@@ -333,11 +378,11 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/grayscale.js"></script>
 
-	<!-- node animation -->
-	<script src="js/nodes/TweenLite.min.js"></script>
-	<script src="js/nodes/EasePack.min.js"></script>
-	<script src="js/nodes/rAF.js"></script>
-	<script src="js/nodes/demo-1.js"></script>
+  <!-- node animation -->
+  <script src="js/nodes/TweenLite.min.js"></script>
+  <script src="js/nodes/EasePack.min.js"></script>
+  <script src="js/nodes/rAF.js"></script>
+  <script src="js/nodes/demo-1.js"></script>
 </body>
 
 </html>

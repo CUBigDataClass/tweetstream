@@ -34,7 +34,6 @@ angular.module('app').controller('HomeController', [
             });
           }
           $scope.latest = $scope.oldString;
-          console.log($scope.latest);
           $scope.totalItems = $scope.latest.length;
       });
   },1000);
