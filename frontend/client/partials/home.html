@@ -131,7 +131,7 @@
                   </form>
                   <div id="container" style="position: relative; width: 1000px; height: 600px;"></div>
                 </div>
-                <div type="hidden" ng-if="sent[0] !== undefined">{{getBubbles(map,onlyTwenty)}}</div>
+                <div type="hidden" ng-if="sent[0] !== undefined">{{getBubbles(map,sent)}}</div>
                 <div type="hidden" ng-if="sent[0] == undefined">{{getBubbles(map,latest)}}</div>
                 <div class="col-lg-5" style="padding-left:50px; padding-right:50px;">
                 <div ng-hide="sent[0] == undefined">
@@ -204,6 +204,7 @@
             <div class="row">
               <div class="col-md-7">
                 <p class="text-center">Total Tweets:{{count}}</p>
+                <p class="text-center">Current Count: {{stateCount}}</p>
               </div>
             </div>
     </section>
@@ -260,6 +261,9 @@
             </p>
             <p class="text-left">
               3)  Get a better sentiment analysis.
+            </p>
+            <p class="text-left">
+              4) Zoomable map.
             </p>
             <p data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
               Thanks for reading!

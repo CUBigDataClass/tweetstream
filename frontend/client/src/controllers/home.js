@@ -87,7 +87,7 @@ angular.module('app').controller('HomeController', [
             url: '/tweets/'+state
            }).then(function(tweets){
             $scope.sent = tweets.data;
-            $scope.onlyTwenty = tweets.data.slice(0,20);
+            $scope.stateCount = tweets.data.length;
             $scope.totalItems = $scope.sent.length;
             var totalSent = 0;
             for(var index in tweets.data){
@@ -123,6 +123,7 @@ angular.module('app').controller('HomeController', [
         }).then(function(tweets){
 
          $scope.sent = tweets.data;
+         $scope.stateCount = tweets.data.length;
          $scope.stateFills = {}
 
          for (var index in tweets.data){
