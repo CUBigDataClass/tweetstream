@@ -34,7 +34,7 @@ angular.module('app').controller('HomeController', [
             });
           }
           $scope.latest = $scope.oldString;
-          $scope.totalItems = $scope.latest.length;
+          $scope.latestItems = $scope.latest.length;
       });
   },1000);
 
@@ -88,7 +88,7 @@ angular.module('app').controller('HomeController', [
            }).then(function(tweets){
             $scope.sent = tweets.data;
             $scope.stateCount = tweets.data.length;
-            $scope.totalItems = $scope.sent.length;
+            $scope.sentItems = $scope.sent.length;
             var totalSent = 0;
             for(var index in tweets.data){
               tweetSent = tweets.data[index].sentiment
@@ -155,8 +155,8 @@ angular.module('app').controller('HomeController', [
         $scope.map.updateChoropleth(stateJSON);
 
        });
-         $scope.sent = tweets.data;
-          $scope.totalItems = $scope.sent.length;
+        $scope.sent = tweets.data;
+        $scope.sentItems = $scope.sent.length;
      };
         
      
